@@ -6,14 +6,20 @@ import {
   Text,
   useTheme,
 } from '@ui-kitten/components';
+import {Formik} from 'formik';
 import React, {useState} from 'react';
 import {SafeAreaView, StyleSheet, TouchableWithoutFeedback} from 'react-native';
+
+type LoginFormValues = {
+  email: string;
+  password: string;
+};
 
 const Login: React.FC = () => {
   const theme = useTheme();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const initialValues: LoginFormValues = {email: '', password: ''};
+
   const [secureTextEntry, setSecureTextEntry] = useState(true);
 
   const toggleSecureEntry = () => {
@@ -35,56 +41,72 @@ const Login: React.FC = () => {
         ]}>
         <Layout style={styles.container} level="4">
           <Layout style={styles.logoContainer} level="4" />
-          <Layout style={styles.formContainer}>
-            <Text category="h1">Login</Text>
-            <Text category="s1" appearance="hint" style={styles.subtitle}>
-              Enter your details to continue
-            </Text>
-            <Input
-              autoCapitalize="none"
-              size="large"
-              value={email}
-              onChangeText={(text) => setEmail(text)}
-              accessoryLeft={(props) => (
-                <Icon {...props} name="email-outline" />
-              )}
-              style={styles.emailInput}
-              label="E-mail"
-              placeholder="Ex: john@doe.com"
-            />
-            <Input
-              size="large"
-              autoCapitalize="none"
-              value={password}
-              onChangeText={(text) => setPassword(text)}
-              accessoryLeft={(props) => <Icon {...props} name="lock-outline" />}
-              accessoryRight={(props) => (
-                <TouchableWithoutFeedback onPress={toggleSecureEntry}>
-                  <Icon {...props} name={secureTextEntry ? 'eye-off' : 'eye'} />
-                </TouchableWithoutFeedback>
-              )}
-              style={styles.passwordInput}
-              label="Password"
-              placeholder="**********"
-              secureTextEntry={secureTextEntry}
-            />
-            <Layout style={styles.buttonsContainer}>
-              <Button size="large">Login</Button>
-              <Text
-                status="danger"
-                category="s2"
-                appearance="hint"
-                style={styles.forgotPassword}>
-                Forgot your password?
-              </Text>
-              <Button
-                size="large"
-                style={styles.signupButton}
-                appearance="outline">
-                Sign-up
-              </Button>
-            </Layout>
-          </Layout>
+
+          <Formik
+            initialValues={initialValues}
+            onSubmit={(values) => console.log(values)}>
+            {({handleChange, handleBlur, handleSubmit, values}) => (
+              <Layout style={styles.formContainer}>
+                <Text category="h1">Login</Text>
+                <Text category="s1" appearance="hint" style={styles.subtitle}>
+                  Enter your details to continue
+                </Text>
+                <Input
+                  autoCapitalize="none"
+                  size="large"
+                  value={values.email}
+                  onChangeText={handleChange('email')}
+                  onBlur={handleBlur('email')}
+                  accessoryLeft={(props) => (
+                    <Icon {...props} name="email-outline" />
+                  )}
+                  style={styles.emailInput}
+                  label="E-mail"
+                  placeholder="Ex: john@doe.com"
+                />
+                <Input
+                  size="large"
+                  autoCapitalize="none"
+                  value={values.password}
+                  onChangeText={handleChange('password')}
+                  onBlur={handleBlur('password')}
+                  accessoryLeft={(props) => (
+                    <Icon {...props} name="lock-outline" />
+                  )}
+                  accessoryRight={(props) => (
+                    <TouchableWithoutFeedback onPress={toggleSecureEntry}>
+                      <Icon
+                        {...props}
+                        name={secureTextEntry ? 'eye-off' : 'eye'}
+                      />
+                    </TouchableWithoutFeedback>
+                  )}
+                  style={styles.passwordInput}
+                  label="Password"
+                  placeholder="**********"
+                  secureTextEntry={secureTextEntry}
+                />
+                <Layout style={styles.buttonsContainer}>
+                  <Button size="large" onPress={handleSubmit}>
+                    Login
+                  </Button>
+                  <Text
+                    status="danger"
+                    category="s2"
+                    appearance="hint"
+                    style={styles.forgotPassword}>
+                    Forgot your password?
+                  </Text>
+                  <Button
+                    size="large"
+                    style={styles.signupButton}
+                    appearance="outline">
+                    Sign-up
+                  </Button>
+                </Layout>
+              </Layout>
+            )}
+          </Formik>
         </Layout>
       </SafeAreaView>
     </>
