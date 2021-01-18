@@ -1,10 +1,16 @@
-import {Login} from '@/presentation/pages';
+import {Router} from '@/presentation/routes';
 import * as eva from '@eva-design/eva';
-import {ApplicationProvider} from '@ui-kitten/components';
+import {NavigationContainer} from '@react-navigation/native';
+import {ApplicationProvider, IconRegistry} from '@ui-kitten/components';
+import {EvaIconsPack} from '@ui-kitten/eva-icons';
 import React from 'react';
+import 'react-native-gesture-handler';
 
 export default () => (
-  <ApplicationProvider {...eva} theme={eva.light}>
-    <Login />
-  </ApplicationProvider>
+  <NavigationContainer>
+    <IconRegistry icons={EvaIconsPack} />
+    <ApplicationProvider {...eva} theme={eva.light}>
+      <Router />
+    </ApplicationProvider>
+  </NavigationContainer>
 );
