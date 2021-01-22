@@ -46,12 +46,13 @@ const Login: React.FC = () => {
             initialValues={initialValues}
             onSubmit={(values) => console.log(values)}>
             {({handleChange, handleBlur, handleSubmit, values}) => (
-              <Layout style={styles.formContainer}>
+              <Layout testID="form_container" style={styles.formContainer}>
                 <Text category="h1">Login</Text>
                 <Text category="s1" appearance="hint" style={styles.subtitle}>
                   Enter your details to continue
                 </Text>
                 <Input
+                  testID="email_input"
                   autoCapitalize="none"
                   size="large"
                   value={values.email}
@@ -65,6 +66,7 @@ const Login: React.FC = () => {
                   placeholder="Ex: john@doe.com"
                 />
                 <Input
+                  testID="password_input"
                   size="large"
                   autoCapitalize="none"
                   value={values.password}
@@ -74,7 +76,9 @@ const Login: React.FC = () => {
                     <Icon {...props} name="lock-outline" />
                   )}
                   accessoryRight={(props) => (
-                    <TouchableWithoutFeedback onPress={toggleSecureEntry}>
+                    <TouchableWithoutFeedback
+                      testID="visibility_touchable"
+                      onPress={toggleSecureEntry}>
                       <Icon
                         {...props}
                         name={secureTextEntry ? 'eye-off' : 'eye'}
@@ -86,11 +90,17 @@ const Login: React.FC = () => {
                   placeholder="**********"
                   secureTextEntry={secureTextEntry}
                 />
-                <Layout style={styles.buttonsContainer}>
-                  <Button size="large" onPress={handleSubmit}>
+                <Layout
+                  testID="buttons_container"
+                  style={styles.buttonsContainer}>
+                  <Button
+                    testID="login_button"
+                    size="large"
+                    onPress={handleSubmit}>
                     Login
                   </Button>
                   <Text
+                    testID="forgot_password_text"
                     status="danger"
                     category="s2"
                     appearance="hint"
@@ -98,6 +108,7 @@ const Login: React.FC = () => {
                     Forgot your password?
                   </Text>
                   <Button
+                    testID="sign_up_button"
                     size="large"
                     style={styles.signupButton}
                     appearance="outline">
