@@ -10,6 +10,7 @@ import {
 import {InputProps} from '@ui-kitten/components';
 import faker from 'faker';
 import React from 'react';
+import {ReactTestInstance} from 'react-test-renderer';
 import {Login} from '..';
 
 type SutTypes = {
@@ -71,7 +72,6 @@ describe('Login Page', () => {
     fireEvent.changeText(emailInput, mockPerson.email);
     fireEvent.changeText(passwordInput, mockPerson.password);
 
-    expect(emailInput.props.value).toBe(mockPerson.email);
     expect(validationSpy.values).toEqual({
       email: mockPerson.email,
       password: mockPerson.password,
@@ -120,5 +120,43 @@ describe('Login Page', () => {
 
     expect(passwordInput.props.status).toBe('danger');
     expect(getByText(passwordErrorMessage)).toBeDefined();
+  });
+
+  test('Should show valid state ', async () => {
+    const {
+      sut: {getByTestId},
+      validationSpy,
+    } = makeSut();
+    const mockPerson = makeFakePerson();
+    validationSpy.errors = {};
+
+    const emailInput = getByTestId('email_input');
+    const passwordInput = getByTestId('password_input');
+
+    await waitFor(() => {
+      fireEvent.changeText(emailInput, mockPerson.email);
+      fireEvent.changeText(passwordInput, mockPerson.password);
+      fireEvent(emailInput, 'onSubmitEditing');
+      fireEvent(passwordInput, 'onSubmitEditing');
+    });
+
+    expect(emailInput.props.value).toBe(mockPerson.email);
+    expect(passwordInput.props.value).toBe(mockPerson.password);
+
+    expect(emailInput.props.status).toBe('basic');
+    expect(passwordInput.props.status).toBe('basic');
+
+    const emailInputWrapper = getByTestId('email_input_container')
+      .children[0] as ReactTestInstance;
+
+    const emailInputWrapperProps = emailInputWrapper.props as InputProps;
+
+    const passwordInputWrapper = getByTestId('password_input_container')
+      .children[0] as ReactTestInstance;
+
+    const passwordInputWrapperProps = passwordInputWrapper.props as InputProps;
+
+    expect(emailInputWrapperProps.caption).toBeNull();
+    expect(passwordInputWrapperProps.caption).toBeNull();
   });
 });
