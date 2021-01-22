@@ -88,4 +88,22 @@ describe('Login Page', () => {
       password: '',
     });
   });
+
+  test('Should call Validation with correct password', () => {
+    const {
+      sut: {getByTestId},
+      validationSpy,
+    } = makeSut();
+    const mockPerson = makeFakePerson();
+
+    const passwordInput = getByTestId('password_input');
+
+    fireEvent.changeText(passwordInput, mockPerson.password);
+
+    expect(passwordInput.props.value).toBe(mockPerson.password);
+    expect(validationSpy.values).toEqual({
+      email: '',
+      password: mockPerson.password,
+    });
+  });
 });
