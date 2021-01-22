@@ -1,4 +1,5 @@
 import {Validation} from '@/presentation/protocols/validation';
+import {LoginFormValues} from '@/presentation/types';
 import {
   Button,
   Icon,
@@ -11,13 +12,8 @@ import {Formik} from 'formik';
 import React, {useState} from 'react';
 import {SafeAreaView, StyleSheet, TouchableWithoutFeedback} from 'react-native';
 
-export type LoginFormValues = {
-  email: string;
-  password: string;
-};
-
 type LoginProps = {
-  validation: Validation;
+  validation: Validation<LoginFormValues>;
 };
 
 const Login: React.FC<LoginProps> = ({validation}) => {
