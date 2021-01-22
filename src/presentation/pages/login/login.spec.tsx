@@ -17,7 +17,7 @@ type SutTypes = {
   validationSpy: ValidationSpy;
 };
 
-const makeSut = () => {
+const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy();
   const sut = render(
     <ApplicationProviderMock>
