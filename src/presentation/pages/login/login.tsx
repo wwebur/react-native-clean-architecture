@@ -10,7 +10,12 @@ import {
 } from '@ui-kitten/components';
 import {Formik} from 'formik';
 import React, {useState} from 'react';
-import {SafeAreaView, StyleSheet, TouchableWithoutFeedback} from 'react-native';
+import {
+  SafeAreaView,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 
 type LoginProps = {
   validation: Validation<LoginFormValues>;
@@ -44,61 +49,98 @@ const Login: React.FC<LoginProps> = ({validation}) => {
           <Layout style={styles.logoContainer} level="4" />
 
           <Formik
+            validateOnMount={false}
             validateOnChange
             validateOnBlur
             initialValues={initialValues}
-            validate={(values) =>
-              validation.validate({
+            validate={(values) => {
+              return validation.validate({
                 email: values.email,
                 password: values.password,
-              })
-            }
+              });
+            }}
             onSubmit={(values) => console.log(values)}>
-            {({handleChange, handleBlur, handleSubmit, values}) => (
+            {({
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              values,
+              touched,
+              errors,
+              setFieldTouched,
+            }) => (
               <Layout testID="form_container" style={styles.formContainer}>
                 <Text category="h1">Login</Text>
                 <Text category="s1" appearance="hint" style={styles.subtitle}>
                   Enter your details to continue
                 </Text>
-                <Input
-                  testID="email_input"
-                  autoCapitalize="none"
-                  size="large"
-                  value={values.email}
-                  onChangeText={handleChange('email')}
-                  onBlur={handleBlur('email')}
-                  accessoryLeft={(props) => (
-                    <Icon {...props} name="email-outline" />
-                  )}
-                  style={styles.emailInput}
-                  label="E-mail"
-                  placeholder="Ex: john@doe.com"
-                />
-                <Input
-                  testID="password_input"
-                  size="large"
-                  autoCapitalize="none"
-                  value={values.password}
-                  onChangeText={handleChange('password')}
-                  onBlur={handleBlur('password')}
-                  accessoryLeft={(props) => (
-                    <Icon {...props} name="lock-outline" />
-                  )}
-                  accessoryRight={(props) => (
-                    <TouchableWithoutFeedback
-                      testID="visibility_touchable"
-                      onPress={toggleSecureEntry}>
-                      <Icon
-                        {...props}
-                        name={secureTextEntry ? 'eye-off' : 'eye'}
-                      />
-                    </TouchableWithoutFeedback>
-                  )}
-                  style={styles.passwordInput}
-                  label="Password"
-                  placeholder="**********"
-                  secureTextEntry={secureTextEntry}
-                />
+                <View testID="email_input_container">
+                  <Input
+                    testID="email_input"
+                    autoCapitalize="none"
+                    size="large"
+                    value={values.email}
+                    onChangeText={handleChange('email')}
+                    onBlur={handleBlur('email')}
+                    accessoryLeft={(props) => (
+                      <Icon {...props} name="email-outline" />
+                    )}
+                    style={styles.emailInput}
+                    label="E-mail"
+                    placeholder="Ex: john@doe.com"
+                    onSubmitEditing={() => setFieldTouched('email', true)}
+                    status={touched.email && errors.email ? 'danger' : 'basic'}
+                    captionIcon={
+                      touched.email && errors.email
+                        ? (props) => <Icon {...props} name="info-outline" />
+                        : null
+                    }
+                    caption={
+                      touched.email && errors.email ? errors.email : null
+                    }
+                  />
+                </View>
+                <View testID="password_input_container">
+                  <Input
+                    testID="password_input"
+                    size="large"
+                    autoCapitalize="none"
+                    value={values.password}
+                    onChangeText={handleChange('password')}
+                    onBlur={handleBlur('password')}
+                    accessoryLeft={(props) => (
+                      <Icon {...props} name="lock-outline" />
+                    )}
+                    accessoryRight={(props) => (
+                      <TouchableWithoutFeedback
+                        testID="visibility_touchable"
+                        onPress={toggleSecureEntry}>
+                        <Icon
+                          {...props}
+                          name={secureTextEntry ? 'eye-off' : 'eye'}
+                        />
+                      </TouchableWithoutFeedback>
+                    )}
+                    style={styles.passwordInput}
+                    label="Password"
+                    placeholder="**********"
+                    secureTextEntry={secureTextEntry}
+                    onSubmitEditing={() => setFieldTouched('password', true)}
+                    status={
+                      touched.password && errors.password ? 'danger' : 'basic'
+                    }
+                    captionIcon={
+                      touched.password && errors.password
+                        ? (props) => <Icon {...props} name="info-outline" />
+                        : null
+                    }
+                    caption={
+                      touched.password && errors.password
+                        ? errors.password
+                        : null
+                    }
+                  />
+                </View>
                 <Layout
                   testID="buttons_container"
                   style={styles.buttonsContainer}>
