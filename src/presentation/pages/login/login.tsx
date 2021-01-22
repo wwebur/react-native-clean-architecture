@@ -1,3 +1,4 @@
+import {Validation} from '@/presentation/protocols/validation';
 import {
   Button,
   Icon,
@@ -10,12 +11,16 @@ import {Formik} from 'formik';
 import React, {useState} from 'react';
 import {SafeAreaView, StyleSheet, TouchableWithoutFeedback} from 'react-native';
 
-type LoginFormValues = {
+export type LoginFormValues = {
   email: string;
   password: string;
 };
 
-const Login: React.FC = () => {
+type LoginProps = {
+  validation: Validation;
+};
+
+const Login: React.FC<LoginProps> = ({validation}) => {
   const theme = useTheme();
 
   const initialValues: LoginFormValues = {email: '', password: ''};
@@ -43,7 +48,15 @@ const Login: React.FC = () => {
           <Layout style={styles.logoContainer} level="4" />
 
           <Formik
+            validateOnChange
+            validateOnBlur
             initialValues={initialValues}
+            validate={(values) =>
+              validation.validate({
+                email: values.email,
+                password: values.password,
+              })
+            }
             onSubmit={(values) => console.log(values)}>
             {({handleChange, handleBlur, handleSubmit, values}) => (
               <Layout testID="form_container" style={styles.formContainer}>
