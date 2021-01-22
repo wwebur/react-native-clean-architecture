@@ -5,6 +5,7 @@ import {
   fireEvent,
   render,
   RenderAPI,
+  waitFor,
 } from '@testing-library/react-native';
 import {InputProps} from '@ui-kitten/components';
 import faker from 'faker';
@@ -75,5 +76,49 @@ describe('Login Page', () => {
       email: mockPerson.email,
       password: mockPerson.password,
     });
+  });
+
+  test('Should show email error if Validation fails', async () => {
+    const {
+      sut: {getByTestId, getByText},
+      validationSpy,
+    } = makeSut();
+    const mockPerson = makeFakePerson();
+    const emailErrorMessage = 'Invalid E-mail';
+    validationSpy.errors = {
+      email: emailErrorMessage,
+    };
+
+    const emailInput = getByTestId('email_input');
+
+    await waitFor(() => {
+      fireEvent.changeText(emailInput, mockPerson.email);
+      fireEvent(emailInput, 'onSubmitEditing');
+    });
+
+    expect(emailInput.props.status).toBe('danger');
+    expect(getByText(emailErrorMessage)).toBeDefined();
+  });
+
+  test('Should show password error if Validation fails', async () => {
+    const {
+      sut: {getByTestId, getByText},
+      validationSpy,
+    } = makeSut();
+    const mockPerson = makeFakePerson();
+    const passwordErrorMessage = 'Invalid Password';
+    validationSpy.errors = {
+      password: passwordErrorMessage,
+    };
+
+    const passwordInput = getByTestId('password_input');
+
+    await waitFor(() => {
+      fireEvent.changeText(passwordInput, mockPerson.password);
+      fireEvent(passwordInput, 'onSubmitEditing');
+    });
+
+    expect(passwordInput.props.status).toBe('danger');
+    expect(getByText(passwordErrorMessage)).toBeDefined();
   });
 });
