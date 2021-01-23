@@ -110,6 +110,7 @@ describe('Login Page', () => {
 
     expect(emailInput.props.status).toBe('danger');
     expect(getByText(emailErrorMessage)).toBeDefined();
+    expect(getByTestId('login_button')).toBeDisabled();
   });
 
   test('Should show password error if Validation fails', async () => {
@@ -132,6 +133,7 @@ describe('Login Page', () => {
 
     expect(passwordInput.props.status).toBe('danger');
     expect(getByText(passwordErrorMessage)).toBeDefined();
+    expect(getByTestId('login_button')).toBeDisabled();
   });
 
   test('Should show valid state ', async () => {
@@ -167,5 +169,6 @@ describe('Login Page', () => {
 
     expect(emailCaption).toBeNull();
     expect(passwordCaption).toBeNull();
+    expect(getByTestId('login_button')).not.toBeDisabled();
   });
 });
