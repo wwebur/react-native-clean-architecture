@@ -11,6 +11,7 @@ import {
   RenderAPI,
   waitFor,
 } from '@testing-library/react-native';
+import {Spinner} from '@ui-kitten/components';
 import faker from 'faker';
 import React from 'react';
 import {Login} from '..';
@@ -154,5 +155,27 @@ describe('Login Page', () => {
       getInputCaptionByContainer(getByTestId('password_input_container')),
     ).toBeNull();
     expect(getByTestId('login_button')).not.toBeDisabled();
+  });
+
+  test('Should show spinner on submit', async () => {
+    const {
+      sut: {getByTestId},
+    } = makeSut();
+    const mockPerson = makeFakePerson();
+
+    const emailInput = getByTestId('email_input');
+    const passwordInput = getByTestId('password_input');
+    const loginButton = getByTestId('login_button');
+
+    await waitFor(() => {
+      fireEvent.changeText(emailInput, mockPerson.email);
+      fireEvent.changeText(passwordInput, mockPerson.password);
+      fireEvent(emailInput, 'onSubmitEditing');
+      fireEvent(passwordInput, 'onSubmitEditing');
+      fireEvent.press(loginButton);
+    });
+
+    const spinner = getByTestId('buttons_container').findByType(Spinner);
+    expect(spinner).toBeTruthy();
   });
 });
