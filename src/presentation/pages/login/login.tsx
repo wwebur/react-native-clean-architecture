@@ -145,6 +145,7 @@ const Login: React.FC<LoginProps> = ({validation}) => {
                   testID="buttons_container"
                   style={styles.buttonsContainer}>
                   <Button
+                    disabled={!!errors.email || !!errors.password}
                     testID="login_button"
                     size="large"
                     onPress={handleSubmit}>
