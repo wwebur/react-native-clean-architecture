@@ -11,7 +11,6 @@ import {
   RenderAPI,
   waitFor,
 } from '@testing-library/react-native';
-import {InputProps} from '@ui-kitten/components';
 import faker from 'faker';
 import React from 'react';
 import {Login} from '..';
@@ -49,26 +48,21 @@ describe('Login Page', () => {
       sut: {getByTestId},
     } = makeSut();
 
-    const emailInputProps = getByTestId('email_input').props as InputProps;
-    const passwordInputProps = getByTestId('password_input')
-      .props as InputProps;
+    const emailInput = getByTestId('email_input');
+    const passwordInput = getByTestId('password_input');
 
-    const emailCaption = getInputCaptionByContainer(
-      getByTestId('email_input_container'),
-    );
-    const passwordCaption = getInputCaptionByContainer(
-      getByTestId('password_input_container'),
-    );
-    const loginButton = getByTestId('login_button');
-
-    expect(emailInputProps.status).toBe('basic');
-    expect(passwordInputProps.status).toBe('basic');
-    expect(emailInputProps.value).toBe('');
-    expect(passwordInputProps.value).toBe('');
-    expect(emailCaption).toBeNull();
-    expect(passwordCaption).toBeNull();
-    expect(passwordInputProps.secureTextEntry).toBe(true);
-    expect(loginButton).not.toBeDisabled();
+    expect(emailInput).toHaveProp('status', 'basic');
+    expect(passwordInput).toHaveProp('status', 'basic');
+    expect(emailInput).toHaveProp('value', '');
+    expect(passwordInput).toHaveProp('value', '');
+    expect(passwordInput).toHaveProp('secureTextEntry', true);
+    expect(
+      getInputCaptionByContainer(getByTestId('email_input_container')),
+    ).toBeNull();
+    expect(
+      getInputCaptionByContainer(getByTestId('password_input_container')),
+    ).toBeNull();
+    expect(getByTestId('login_button')).not.toBeDisabled();
   });
 
   test('Should call Validation with correct values', () => {
@@ -108,7 +102,7 @@ describe('Login Page', () => {
       fireEvent(emailInput, 'onSubmitEditing');
     });
 
-    expect(emailInput.props.status).toBe('danger');
+    expect(emailInput).toHaveProp('status', 'danger');
     expect(getByText(emailErrorMessage)).toBeDefined();
     expect(getByTestId('login_button')).toBeDisabled();
   });
@@ -131,7 +125,7 @@ describe('Login Page', () => {
       fireEvent(passwordInput, 'onSubmitEditing');
     });
 
-    expect(passwordInput.props.status).toBe('danger');
+    expect(passwordInput).toHaveProp('status', 'danger');
     expect(getByText(passwordErrorMessage)).toBeDefined();
     expect(getByTestId('login_button')).toBeDisabled();
   });
@@ -154,21 +148,16 @@ describe('Login Page', () => {
       fireEvent(passwordInput, 'onSubmitEditing');
     });
 
-    expect(emailInput.props.value).toBe(mockPerson.email);
-    expect(passwordInput.props.value).toBe(mockPerson.password);
-
-    expect(emailInput.props.status).toBe('basic');
-    expect(passwordInput.props.status).toBe('basic');
-
-    const emailCaption = getInputCaptionByContainer(
-      getByTestId('email_input_container'),
-    );
-    const passwordCaption = getInputCaptionByContainer(
-      getByTestId('password_input_container'),
-    );
-
-    expect(emailCaption).toBeNull();
-    expect(passwordCaption).toBeNull();
+    expect(emailInput).toHaveProp('value', mockPerson.email);
+    expect(passwordInput).toHaveProp('value', mockPerson.password);
+    expect(emailInput).toHaveProp('status', 'basic');
+    expect(passwordInput).toHaveProp('status', 'basic');
+    expect(
+      getInputCaptionByContainer(getByTestId('email_input_container')),
+    ).toBeNull();
+    expect(
+      getInputCaptionByContainer(getByTestId('password_input_container')),
+    ).toBeNull();
     expect(getByTestId('login_button')).not.toBeDisabled();
   });
 });
