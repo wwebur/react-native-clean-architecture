@@ -59,6 +59,7 @@ describe('Login Page', () => {
     const passwordCaption = getInputCaptionByContainer(
       getByTestId('password_input_container'),
     );
+    const loginButton = getByTestId('login_button');
 
     expect(emailInputProps.status).toBe('basic');
     expect(passwordInputProps.status).toBe('basic');
@@ -67,6 +68,7 @@ describe('Login Page', () => {
     expect(emailCaption).toBeNull();
     expect(passwordCaption).toBeNull();
     expect(passwordInputProps.secureTextEntry).toBe(true);
+    expect(loginButton).not.toBeDisabled();
   });
 
   test('Should call Validation with correct values', () => {
