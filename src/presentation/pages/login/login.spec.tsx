@@ -20,8 +20,13 @@ type SutTypes = {
   validationSpy: ValidationSpy;
 };
 
-const makeSut = (): SutTypes => {
+type SutParams = {
+  validationErrors: LoginFormValues;
+};
+
+const makeSut = (params?: SutParams): SutTypes => {
   const validationSpy = new ValidationSpy();
+  validationSpy.errors = params?.validationErrors;
   const sut = render(
     <ApplicationProviderMock>
       <Login validation={validationSpy} />
@@ -85,15 +90,11 @@ describe('Login Page', () => {
   });
 
   test('Should show email error if Validation fails', async () => {
+    const emailErrorMessage = 'Invalid E-mail';
     const {
       sut: {getByTestId, getByText},
-      validationSpy,
-    } = makeSut();
+    } = makeSut({validationErrors: {email: emailErrorMessage}});
     const mockPerson = makeFakePerson();
-    const emailErrorMessage = 'Invalid E-mail';
-    validationSpy.errors = {
-      email: emailErrorMessage,
-    };
 
     const emailInput = getByTestId('email_input');
 
@@ -108,15 +109,11 @@ describe('Login Page', () => {
   });
 
   test('Should show password error if Validation fails', async () => {
+    const passwordErrorMessage = 'Invalid Password';
     const {
       sut: {getByTestId, getByText},
-      validationSpy,
-    } = makeSut();
+    } = makeSut({validationErrors: {password: passwordErrorMessage}});
     const mockPerson = makeFakePerson();
-    const passwordErrorMessage = 'Invalid Password';
-    validationSpy.errors = {
-      password: passwordErrorMessage,
-    };
 
     const passwordInput = getByTestId('password_input');
 
@@ -133,10 +130,8 @@ describe('Login Page', () => {
   test('Should show valid state ', async () => {
     const {
       sut: {getByTestId},
-      validationSpy,
     } = makeSut();
     const mockPerson = makeFakePerson();
-    validationSpy.errors = {};
 
     const emailInput = getByTestId('email_input');
     const passwordInput = getByTestId('password_input');
