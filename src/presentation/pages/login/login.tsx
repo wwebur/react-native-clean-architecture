@@ -5,6 +5,7 @@ import {
   Icon,
   Input,
   Layout,
+  Spinner,
   Text,
   useTheme,
 } from '@ui-kitten/components';
@@ -27,9 +28,15 @@ const Login: React.FC<LoginProps> = ({validation}) => {
   const initialValues: LoginFormValues = {email: '', password: ''};
 
   const [secureTextEntry, setSecureTextEntry] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const toggleSecureEntry = () => {
     setSecureTextEntry((prevSecuryTextEntry) => !prevSecuryTextEntry);
+  };
+
+  const onSubmit = (values: LoginFormValues): void => {
+    console.log(values);
+    setLoading(true);
   };
 
   return (
@@ -59,7 +66,7 @@ const Login: React.FC<LoginProps> = ({validation}) => {
                 password: values.password,
               });
             }}
-            onSubmit={(values) => console.log(values)}>
+            onSubmit={onSubmit}>
             {({
               handleChange,
               handleBlur,
@@ -145,6 +152,11 @@ const Login: React.FC<LoginProps> = ({validation}) => {
                   testID="buttons_container"
                   style={styles.buttonsContainer}>
                   <Button
+                    accessoryLeft={
+                      loading
+                        ? (props) => <Spinner {...props} testID="spinner" />
+                        : null
+                    }
                     disabled={!!errors.email || !!errors.password}
                     testID="login_button"
                     size="large"
