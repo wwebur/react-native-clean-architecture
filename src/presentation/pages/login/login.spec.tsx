@@ -1,4 +1,8 @@
-import {ApplicationProviderMock, ValidationSpy} from '@/presentation/test';
+import {
+  ApplicationProviderMock,
+  getInputCaptionByContainer,
+  ValidationSpy,
+} from '@/presentation/test';
 import {LoginFormValues} from '@/presentation/types';
 import {
   cleanup,
@@ -10,7 +14,6 @@ import {
 import {InputProps} from '@ui-kitten/components';
 import faker from 'faker';
 import React from 'react';
-import {ReactTestInstance} from 'react-test-renderer';
 import {Login} from '..';
 
 type SutTypes = {
@@ -50,12 +53,19 @@ describe('Login Page', () => {
     const passwordInputProps = getByTestId('password_input')
       .props as InputProps;
 
+    const emailCaption = getInputCaptionByContainer(
+      getByTestId('email_input_container'),
+    );
+    const passwordCaption = getInputCaptionByContainer(
+      getByTestId('password_input_container'),
+    );
+
     expect(emailInputProps.status).toBe('basic');
     expect(passwordInputProps.status).toBe('basic');
     expect(emailInputProps.value).toBe('');
     expect(passwordInputProps.value).toBe('');
-    expect(emailInputProps.caption).toBeUndefined();
-    expect(passwordInputProps.caption).toBeUndefined();
+    expect(emailCaption).toBeNull();
+    expect(passwordCaption).toBeNull();
     expect(passwordInputProps.secureTextEntry).toBe(true);
   });
 
@@ -146,17 +156,14 @@ describe('Login Page', () => {
     expect(emailInput.props.status).toBe('basic');
     expect(passwordInput.props.status).toBe('basic');
 
-    const emailInputWrapper = getByTestId('email_input_container')
-      .children[0] as ReactTestInstance;
+    const emailCaption = getInputCaptionByContainer(
+      getByTestId('email_input_container'),
+    );
+    const passwordCaption = getInputCaptionByContainer(
+      getByTestId('password_input_container'),
+    );
 
-    const emailInputWrapperProps = emailInputWrapper.props as InputProps;
-
-    const passwordInputWrapper = getByTestId('password_input_container')
-      .children[0] as ReactTestInstance;
-
-    const passwordInputWrapperProps = passwordInputWrapper.props as InputProps;
-
-    expect(emailInputWrapperProps.caption).toBeNull();
-    expect(passwordInputWrapperProps.caption).toBeNull();
+    expect(emailCaption).toBeNull();
+    expect(passwordCaption).toBeNull();
   });
 });
