@@ -1,3 +1,4 @@
+import {Authentication} from '@/domain/usecases';
 import {Validation} from '@/presentation/protocols/validation';
 import {LoginFormValues} from '@/presentation/types';
 import {
@@ -20,9 +21,10 @@ import {
 
 type LoginProps = {
   validation: Validation<LoginFormValues>;
+  authentication: Authentication;
 };
 
-const Login: React.FC<LoginProps> = ({validation}) => {
+const Login: React.FC<LoginProps> = ({validation, authentication}) => {
   const theme = useTheme();
 
   const initialValues: LoginFormValues = {email: '', password: ''};
@@ -34,9 +36,10 @@ const Login: React.FC<LoginProps> = ({validation}) => {
     setSecureTextEntry((prevSecuryTextEntry) => !prevSecuryTextEntry);
   };
 
-  const onSubmit = (values: LoginFormValues): void => {
+  const onSubmit = async (values: LoginFormValues): Promise<void> => {
     console.log(values);
     setLoading(true);
+    await authentication.auth({email: values.email, password: values.password});
   };
 
   return (
