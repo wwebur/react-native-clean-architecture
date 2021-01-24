@@ -1,3 +1,6 @@
+import {AccountModel} from '@/domain/models';
+import {mockAccountModel} from '@/domain/test';
+import {Authentication, AuthenticationParams} from '@/domain/usecases';
 import {
   ApplicationProviderMock,
   getInputCaptionByContainer,
@@ -16,9 +19,19 @@ import faker from 'faker';
 import React from 'react';
 import {Login} from '..';
 
+class AuthenticationSpy implements Authentication {
+  account = mockAccountModel();
+  params: AuthenticationParams;
+  auth(params: AuthenticationParams): Promise<AccountModel> {
+    this.params = params;
+    return Promise.resolve(this.account);
+  }
+}
+
 type SutTypes = {
   sut: RenderAPI;
   validationSpy: ValidationSpy;
+  authenticationSpy: AuthenticationSpy;
 };
 
 type SutParams = {
@@ -28,14 +41,16 @@ type SutParams = {
 const makeSut = (params?: SutParams): SutTypes => {
   const validationSpy = new ValidationSpy();
   validationSpy.errors = params?.validationErrors;
+  const authenticationSpy = new AuthenticationSpy();
   const sut = render(
     <ApplicationProviderMock>
-      <Login validation={validationSpy} />
+      <Login validation={validationSpy} authentication={authenticationSpy} />
     </ApplicationProviderMock>,
   );
   return {
     sut,
     validationSpy,
+    authenticationSpy,
   };
 };
 
@@ -177,5 +192,27 @@ describe('Login Page', () => {
 
     const spinner = getByTestId('buttons_container').findByType(Spinner);
     expect(spinner).toBeTruthy();
+  });
+
+  test('Should call Authentication with correct values', async () => {
+    const {
+      sut: {getByTestId},
+      authenticationSpy,
+    } = makeSut();
+    const mockPerson = makeFakePerson();
+
+    const emailInput = getByTestId('email_input');
+    const passwordInput = getByTestId('password_input');
+    const loginButton = getByTestId('login_button');
+
+    await waitFor(() => {
+      fireEvent.changeText(emailInput, mockPerson.email);
+      fireEvent.changeText(passwordInput, mockPerson.password);
+      fireEvent(emailInput, 'onSubmitEditing');
+      fireEvent(passwordInput, 'onSubmitEditing');
+      fireEvent.press(loginButton);
+    });
+
+    expect(authenticationSpy.params).toEqual(mockPerson);
   });
 });
