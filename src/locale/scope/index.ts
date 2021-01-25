@@ -12,4 +12,9 @@ export enum DefaultI18n {
   password = 'default.password',
 }
 
-export type I18nKeys = LoginI18n | DefaultI18n;
+export enum ErrorsI18n {
+  invalidCredentialsError = 'errors.invalidCredentialsError',
+  unexpectedError = 'errors.unexpectedError',
+}
+
+export type I18nKeys = LoginI18n | ErrorsI18n | DefaultI18n;

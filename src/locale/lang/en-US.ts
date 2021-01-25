@@ -9,4 +9,8 @@ export default {
     email: 'E-mail',
     password: 'Password',
   },
+  errors: {
+    invalidCredentialsError: 'Invalid credentials',
+    unexpectedError: 'An unexpected error occurred. Try again later.',
+  },
 };

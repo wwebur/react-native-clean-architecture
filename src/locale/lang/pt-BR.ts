@@ -9,4 +9,8 @@ export default {
     email: 'E-mail',
     password: 'Senha',
   },
+  errors: {
+    invalidCredentialsError: 'Credenciais inválidas',
+    unexpectedError: 'Algo de errado aconteceu.Tente novamente em breve.',
+  },
 };

@@ -1,6 +1,8 @@
+import {ErrorsI18n, translate} from '@/locale';
+
 export class UnexpectedError extends Error {
   constructor() {
-    super('Algo de errado aconteceu.Tente novamente em breve.');
+    super(translate(ErrorsI18n.unexpectedError));
     this.name = 'UnexpectedError';
   }
 }
