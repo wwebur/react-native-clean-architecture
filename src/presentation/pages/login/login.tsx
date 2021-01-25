@@ -160,7 +160,7 @@ const Login: React.FC<LoginProps> = ({validation, authentication}) => {
                         ? (props) => <Spinner {...props} testID="spinner" />
                         : null
                     }
-                    disabled={!!errors.email || !!errors.password}
+                    disabled={!!errors.email || !!errors.password || loading}
                     testID="login_button"
                     size="large"
                     onPress={handleSubmit}>
