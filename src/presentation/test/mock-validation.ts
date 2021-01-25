@@ -1,4 +1,4 @@
-import {Validation} from '@/presentation/protocols/validation';
+import {Validation} from '@/presentation/protocols';
 import {LoginFormValues} from '@/presentation/types';
 
 export class ValidationSpy implements Validation<LoginFormValues> {
