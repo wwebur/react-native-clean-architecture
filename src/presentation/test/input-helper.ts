@@ -1,4 +1,6 @@
+import {fireEvent, RenderAPI, waitFor} from '@testing-library/react-native';
 import {InputProps} from '@ui-kitten/components';
+import faker from 'faker';
 import {ReactTestInstance} from 'react-test-renderer';
 
 export class InvalidContainerError extends Error {
@@ -20,4 +22,40 @@ export const getInputCaptionByContainer = (
     return null;
   }
   throw new InvalidContainerError();
+};
+
+export const fillInputs = async (
+  sut: RenderAPI,
+  email = faker.internet.email(),
+  password = faker.internet.password(),
+): Promise<void> => {
+  const {getByTestId} = sut;
+  const emailInput = getByTestId('email_input');
+  const passwordInput = getByTestId('password_input');
+  const loginButton = getByTestId('login_button');
+
+  await waitFor(() => {
+    fireEvent.changeText(emailInput, email);
+    fireEvent.changeText(passwordInput, password);
+    fireEvent(emailInput, 'onSubmitEditing');
+    fireEvent(passwordInput, 'onSubmitEditing');
+    fireEvent.press(loginButton);
+  });
+};
+
+export const fillInputByTestID = async (
+  sut: RenderAPI,
+  inputTestID: string,
+  value: string = faker.random.word(),
+  submit: boolean = false,
+): Promise<void> => {
+  const {getByTestId} = sut;
+  const input = getByTestId(inputTestID);
+
+  await waitFor(() => {
+    fireEvent.changeText(input, value);
+    if (submit) {
+      fireEvent(input, 'onSubmitEditing');
+    }
+  });
 };
