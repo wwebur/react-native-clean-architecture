@@ -37,6 +37,9 @@ const Login: React.FC<LoginProps> = ({validation, authentication}) => {
   };
 
   const onSubmit = async (values: LoginFormValues): Promise<void> => {
+    if (loading) {
+      return;
+    }
     console.log(values);
     setLoading(true);
     await authentication.auth({email: values.email, password: values.password});
