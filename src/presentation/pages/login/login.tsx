@@ -1,6 +1,6 @@
 import {Authentication} from '@/domain/usecases';
 import {DefaultI18n, LoginI18n, translate} from '@/locale';
-import {Validation} from '@/presentation/protocols/validation';
+import {Display, Validation} from '@/presentation/protocols';
 import {LoginFormValues} from '@/presentation/types';
 import {
   Button,
@@ -23,9 +23,10 @@ import {
 type LoginProps = {
   validation: Validation<LoginFormValues>;
   authentication: Authentication;
+  display: Display;
 };
 
-const Login: React.FC<LoginProps> = ({validation, authentication}) => {
+const Login: React.FC<LoginProps> = ({validation, authentication, display}) => {
   const theme = useTheme();
 
   const initialValues: LoginFormValues = {email: '', password: ''};
@@ -38,12 +39,21 @@ const Login: React.FC<LoginProps> = ({validation, authentication}) => {
   };
 
   const onSubmit = async (values: LoginFormValues): Promise<void> => {
-    if (loading) {
-      return;
+    try {
+      if (loading) {
+        return;
+      }
+      console.log(values);
+      setLoading(true);
+      await authentication.auth({
+        email: values.email,
+        password: values.password,
+      });
+    } catch (error) {
+      console.log('trow error', error.message);
+      setLoading(false);
+      display.show({title: 'Oops!', description: error.message});
     }
-    console.log(values);
-    setLoading(true);
-    await authentication.auth({email: values.email, password: values.password});
   };
 
   return (
