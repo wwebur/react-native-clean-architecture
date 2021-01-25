@@ -7,7 +7,13 @@ import {
   ValidationSpy,
 } from '@/presentation/test';
 import {LoginFormValues} from '@/presentation/types';
-import {cleanup, render, RenderAPI} from '@testing-library/react-native';
+import {
+  cleanup,
+  fireEvent,
+  render,
+  RenderAPI,
+  waitFor,
+} from '@testing-library/react-native';
 import {Spinner} from '@ui-kitten/components';
 import faker from 'faker';
 import React from 'react';
@@ -88,11 +94,11 @@ describe('Login Page', () => {
     expect(sut.getByTestId('login_button')).not.toBeDisabled();
   });
 
-  test('Should call Validation with correct values', async () => {
+  test('Should call Validation with correct values', () => {
     const {sut, validationSpy} = makeSut();
     const mockPerson = makeFakePerson();
-    await fillInputByTestID(sut, 'email_input', mockPerson.email);
-    await fillInputByTestID(sut, 'password_input', mockPerson.password);
+    fillInputByTestID(sut, 'email_input', mockPerson.email);
+    fillInputByTestID(sut, 'password_input', mockPerson.password);
     expect(validationSpy.values).toEqual({
       email: mockPerson.email,
       password: mockPerson.password,
@@ -102,7 +108,9 @@ describe('Login Page', () => {
   test('Should show email error if Validation fails', async () => {
     const validationErrors = {email: 'Invalid E-mail'};
     const {sut} = makeSut({validationErrors});
-    await fillInputByTestID(sut, 'email_input', makeFakePerson().email, true);
+    await waitFor(() => {
+      fillInputByTestID(sut, 'email_input', makeFakePerson().email, true);
+    });
     assertStatusForInput(sut, 'email_input', validationErrors);
     expect(sut.getByTestId('login_button')).toBeDisabled();
   });
@@ -110,12 +118,9 @@ describe('Login Page', () => {
   test('Should show password error if Validation fails', async () => {
     const validationErrors = {password: 'Invalid Password'};
     const {sut} = makeSut({validationErrors});
-    await fillInputByTestID(
-      sut,
-      'password_input',
-      makeFakePerson().password,
-      true,
-    );
+    await waitFor(() => {
+      fillInputByTestID(sut, 'password_input', makeFakePerson().password, true);
+    });
     assertStatusForInput(sut, 'password_input', validationErrors);
     expect(sut.getByTestId('login_button')).toBeDisabled();
   });
@@ -123,8 +128,10 @@ describe('Login Page', () => {
   test('Should show valid state ', async () => {
     const {sut} = makeSut();
     const mockPerson = makeFakePerson();
-    await fillInputByTestID(sut, 'email_input', mockPerson.email, true);
-    await fillInputByTestID(sut, 'password_input', mockPerson.password, true);
+    await waitFor(() => {
+      fillInputByTestID(sut, 'email_input', mockPerson.email, true);
+      fillInputByTestID(sut, 'password_input', mockPerson.password, true);
+    });
     assertValueForInput(sut, 'email_input', mockPerson.email);
     assertValueForInput(sut, 'password_input', mockPerson.password);
     assertStatusForInput(sut, 'email_input');
@@ -134,7 +141,9 @@ describe('Login Page', () => {
 
   test('Should show spinner on submit', async () => {
     const {sut} = makeSut();
-    await fillInputs(sut);
+    await waitFor(() => {
+      fillInputs(sut);
+    });
     const spinner = sut.getByTestId('buttons_container').findByType(Spinner);
     expect(spinner).toBeTruthy();
   });
@@ -142,14 +151,29 @@ describe('Login Page', () => {
   test('Should call Authentication with correct values', async () => {
     const {sut, authenticationSpy} = makeSut();
     const mockPerson = makeFakePerson();
-    await fillInputs(sut, mockPerson.email, mockPerson.password);
+    await waitFor(() => {
+      fillInputs(sut, mockPerson.email, mockPerson.password);
+    });
     expect(authenticationSpy.params).toEqual(mockPerson);
   });
 
   test('Should call Authentication only once', async () => {
     const {sut, authenticationSpy} = makeSut();
-    await fillInputs(sut);
-    await fillInputs(sut);
+    await waitFor(() => {
+      fillInputs(sut);
+      fillInputs(sut);
+    });
     expect(authenticationSpy.callsCount).toBe(1);
+  });
+
+  test('Should not call Authentication if form has errors', async () => {
+    const {sut, authenticationSpy} = makeSut({
+      validationErrors: {email: 'required field', password: 'required field'},
+    });
+    const loginButton = sut.getByTestId('login_button');
+    await waitFor(() => {
+      fireEvent.press(loginButton);
+    });
+    expect(authenticationSpy.callsCount).toBe(0);
   });
 });
