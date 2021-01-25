@@ -4,6 +4,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {ApplicationProvider, IconRegistry} from '@ui-kitten/components';
 import {EvaIconsPack} from '@ui-kitten/eva-icons';
 import React from 'react';
+import FlashMessage from 'react-native-flash-message';
 import 'react-native-gesture-handler';
 
 export default () => (
@@ -11,6 +12,7 @@ export default () => (
     <IconRegistry icons={EvaIconsPack} />
     <ApplicationProvider {...eva} theme={eva.light}>
       <Router />
+      <FlashMessage position="top" />
     </ApplicationProvider>
   </NavigationContainer>
 );
