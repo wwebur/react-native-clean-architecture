@@ -145,4 +145,11 @@ describe('Login Page', () => {
     await fillInputs(sut, mockPerson.email, mockPerson.password);
     expect(authenticationSpy.params).toEqual(mockPerson);
   });
+
+  test('Should call Authentication only once', async () => {
+    const {sut, authenticationSpy} = makeSut();
+    await fillInputs(sut);
+    await fillInputs(sut);
+    expect(authenticationSpy.callsCount).toBe(1);
+  });
 });
