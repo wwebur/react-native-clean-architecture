@@ -1,4 +1,5 @@
 import {Authentication} from '@/domain/usecases';
+import {DefaultI18n, LoginI18n, translate} from '@/locale';
 import {Validation} from '@/presentation/protocols/validation';
 import {LoginFormValues} from '@/presentation/types';
 import {
@@ -83,9 +84,9 @@ const Login: React.FC<LoginProps> = ({validation, authentication}) => {
               setFieldTouched,
             }) => (
               <Layout testID="form_container" style={styles.formContainer}>
-                <Text category="h1">Login</Text>
+                <Text category="h1">{translate(LoginI18n.login)}</Text>
                 <Text category="s1" appearance="hint" style={styles.subtitle}>
-                  Enter your details to continue
+                  {translate(LoginI18n.subtitle)}
                 </Text>
                 <View testID="email_input_container">
                   <Input
@@ -99,7 +100,7 @@ const Login: React.FC<LoginProps> = ({validation, authentication}) => {
                       <Icon {...props} name="email-outline" />
                     )}
                     style={styles.emailInput}
-                    label="E-mail"
+                    label={translate(DefaultI18n.email)}
                     placeholder="Ex: john@doe.com"
                     onSubmitEditing={() => setFieldTouched('email', true)}
                     status={touched.email && errors.email ? 'danger' : 'basic'}
@@ -135,7 +136,7 @@ const Login: React.FC<LoginProps> = ({validation, authentication}) => {
                       </TouchableWithoutFeedback>
                     )}
                     style={styles.passwordInput}
-                    label="Password"
+                    label={translate(DefaultI18n.password)}
                     placeholder="**********"
                     secureTextEntry={secureTextEntry}
                     onSubmitEditing={() => setFieldTouched('password', true)}
@@ -167,7 +168,7 @@ const Login: React.FC<LoginProps> = ({validation, authentication}) => {
                     testID="login_button"
                     size="large"
                     onPress={handleSubmit}>
-                    Login
+                    {translate(LoginI18n.login)}
                   </Button>
                   <Text
                     testID="forgot_password_text"
@@ -175,14 +176,14 @@ const Login: React.FC<LoginProps> = ({validation, authentication}) => {
                     category="s2"
                     appearance="hint"
                     style={styles.forgotPassword}>
-                    Forgot your password?
+                    {translate(LoginI18n.forgotPassword)}
                   </Text>
                   <Button
                     testID="sign_up_button"
                     size="large"
                     style={styles.signupButton}
                     appearance="outline">
-                    Sign-up
+                    {translate(LoginI18n.signUp)}
                   </Button>
                 </Layout>
               </Layout>
