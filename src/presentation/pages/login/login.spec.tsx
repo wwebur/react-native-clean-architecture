@@ -1,3 +1,4 @@
+import {InvalidCredentialsError} from '@/domain/errors';
 import {
   ApplicationProviderMock,
   AuthenticationSpy,
@@ -6,6 +7,7 @@ import {
   getInputCaptionByContainer,
   ValidationSpy,
 } from '@/presentation/test';
+import {DisplaySpy} from '@/presentation/test/mock-display';
 import {LoginFormValues} from '@/presentation/types';
 import {
   cleanup,
@@ -23,6 +25,7 @@ type SutTypes = {
   sut: RenderAPI;
   validationSpy: ValidationSpy;
   authenticationSpy: AuthenticationSpy;
+  displaySpy: DisplaySpy;
 };
 
 type SutParams = {
@@ -33,15 +36,21 @@ const makeSut = (params?: SutParams): SutTypes => {
   const validationSpy = new ValidationSpy();
   validationSpy.errors = params?.validationErrors;
   const authenticationSpy = new AuthenticationSpy();
+  const displaySpy = new DisplaySpy();
   const sut = render(
     <ApplicationProviderMock>
-      <Login validation={validationSpy} authentication={authenticationSpy} />
+      <Login
+        validation={validationSpy}
+        authentication={authenticationSpy}
+        display={displaySpy}
+      />
     </ApplicationProviderMock>,
   );
   return {
     sut,
     validationSpy,
     authenticationSpy,
+    displaySpy,
   };
 };
 
@@ -175,5 +184,20 @@ describe('Login Page', () => {
       fireEvent.press(loginButton);
     });
     expect(authenticationSpy.callsCount).toBe(0);
+  });
+
+  test('Should call Display with correct message if Authentication fails', async () => {
+    const {sut, authenticationSpy, displaySpy} = makeSut();
+    const error = new InvalidCredentialsError();
+    jest
+      .spyOn(authenticationSpy, 'auth')
+      .mockReturnValueOnce(Promise.reject(error));
+    await waitFor(() => {
+      fillInputs(sut);
+    });
+    const spinner = sut.getByTestId('buttons_container').findAllByType(Spinner);
+    expect(displaySpy.title).toBe('Oops!');
+    expect(displaySpy.description).toBe(error.message);
+    expect(spinner.length).toBe(0);
   });
 });
