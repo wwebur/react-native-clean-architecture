@@ -20,6 +20,6 @@ export class LocalStorageAdapter implements Storage<string> {
     }
   }
   async clear(key: string): Promise<void> {
-    console.log(key);
+    await AsyncStorage.removeItem(key);
   }
 }
