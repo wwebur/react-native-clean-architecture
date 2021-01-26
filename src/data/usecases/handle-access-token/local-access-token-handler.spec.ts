@@ -1,7 +1,4 @@
 import {StorageMock} from '@/data/test/mock-storage';
-import {StorageClearError} from '@/domain/errors/storage-clear-error';
-import {StorageGetError} from '@/domain/errors/storage-get-error';
-import {StorageSetError} from '@/domain/errors/storage-set-error';
 import faker from 'faker';
 import {LocalAccessTokenHandler} from './local-access-token-handler';
 
@@ -27,11 +24,11 @@ describe('LocalAccessTokenHandler', () => {
     expect(storageMock.key).toBe('accessToken');
     expect(storageMock.value).toBe(fakeAccessToken);
   });
-  test('Should throw StorageSetError when Storage throws error on set', async () => {
+  test('Should throw Error when Storage throws Error on set', async () => {
     const {sut, storageMock} = makeSut();
     jest.spyOn(storageMock, 'set').mockRejectedValueOnce(new Error());
     const promise = sut.save(faker.random.uuid());
-    await expect(promise).rejects.toThrow(new StorageSetError());
+    await expect(promise).rejects.toThrow(new Error());
   });
   test('Should call Storage with correct values on get', async () => {
     const {sut, storageMock} = makeSut();
@@ -40,11 +37,11 @@ describe('LocalAccessTokenHandler', () => {
     const promise = sut.load();
     await expect(promise).resolves.toBe(fakeAccessToken);
   });
-  test('Should throw StorageGetError when Storage throws error on get', async () => {
+  test('Should throw Error when Storage throws Error on get', async () => {
     const {sut, storageMock} = makeSut();
     jest.spyOn(storageMock, 'get').mockRejectedValueOnce(new Error());
     const promise = sut.load();
-    await expect(promise).rejects.toThrow(new StorageGetError());
+    await expect(promise).rejects.toThrow(new Error());
   });
   test('Should call Storage clear on erase with correct key', async () => {
     const {sut, storageMock} = makeSut();
@@ -53,10 +50,10 @@ describe('LocalAccessTokenHandler', () => {
     expect(storageMock.key).toBe('accessToken');
     expect(clearWatch).toHaveBeenCalled();
   });
-  test('Should return StorageClearError when Storage throws error on clear', async () => {
+  test('Should return Error when Storage throws Error on clear', async () => {
     const {sut, storageMock} = makeSut();
     jest.spyOn(storageMock, 'clear').mockRejectedValueOnce(new Error());
     const promise = sut.erase();
-    await expect(promise).rejects.toThrow(new StorageClearError());
+    await expect(promise).rejects.toThrow(new Error());
   });
 });
