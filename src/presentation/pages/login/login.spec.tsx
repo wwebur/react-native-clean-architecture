@@ -26,6 +26,7 @@ type SutTypes = {
   validationSpy: ValidationSpy;
   authenticationSpy: AuthenticationSpy;
   displaySpy: DisplaySpy;
+  // storageSpy: StorageSpy;
 };
 
 type SutParams = {
@@ -37,6 +38,7 @@ const makeSut = (params?: SutParams): SutTypes => {
   validationSpy.errors = params?.validationErrors;
   const authenticationSpy = new AuthenticationSpy();
   const displaySpy = new DisplaySpy();
+  // const storageSpy = new StorageSpy();
   const sut = render(
     <ApplicationProviderMock>
       <Login
@@ -51,6 +53,7 @@ const makeSut = (params?: SutParams): SutTypes => {
     validationSpy,
     authenticationSpy,
     displaySpy,
+    // storageSpy,
   };
 };
 
@@ -89,6 +92,9 @@ export const assertValueForInput = (
 
 describe('Login Page', () => {
   afterEach(cleanup);
+  beforeEach(() => {
+    // storage.clear();
+  });
 
   test('Should start with initial state', () => {
     const {sut} = makeSut();
@@ -199,5 +205,16 @@ describe('Login Page', () => {
     expect(displaySpy.title).toBe('Oops!');
     expect(displaySpy.description).toBe(error.message);
     expect(spinner.length).toBe(0);
+  });
+
+  test('Should add access token to Storage on success', async () => {
+    // const {sut, authenticationSpy} = makeSut();
+    // await waitFor(() => {
+    //   fillInputs(sut);
+    // });
+    // expect(storage.setItem).toHaveBeenCalledWith(
+    //   'accessToken',
+    //   authenticationSpy.account.accessToken,
+    // );
   });
 });
