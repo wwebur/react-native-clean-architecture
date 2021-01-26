@@ -10,7 +10,7 @@ describe('LocalStorageAdapter', () => {
   beforeEach(() => {
     AsyncStorage.clear();
   });
-  test('Should call AsyncStorage with correct values', async () => {
+  test('Should call AsyncStorage with correct values on set', async () => {
     const sut = makeSut();
     const key = faker.database.column();
     const value = faker.random.word();
@@ -24,5 +24,15 @@ describe('LocalStorageAdapter', () => {
     });
     const promise = sut.set(faker.database.column(), faker.random.word());
     await expect(promise).rejects.toThrow(new StorageSetError());
+  });
+  test('Should call AsyncStorage on get and return correct value', async () => {
+    const sut = makeSut();
+    const key = faker.database.column();
+    const value = faker.random.word();
+    AsyncStorageMock.getItem = jest.fn(() => {
+      return Promise.resolve(value);
+    });
+    const result = await sut.get(key);
+    expect(result).toBe(value);
   });
 });
