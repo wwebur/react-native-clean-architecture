@@ -1,2 +1,2 @@
 export * from './authentication';
-export * from './save-access-token';
+export * from './handle-access-token';
