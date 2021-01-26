@@ -7,4 +7,7 @@ module.exports = {
     '@typescript-eslint/consistent-type-definitions': 'off',
     '@typescript-eslint/strict-boolean-expressions': 'off',
   },
+  env: {
+    'jest/globals': true,
+  },
 };

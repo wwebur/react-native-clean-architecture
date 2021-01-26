@@ -1,6 +1,8 @@
-/* eslint-disable no-undef */
 import {setLanguageToI18n} from '@/locale';
+import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/async-storage-mock';
 import '@testing-library/jest-native/extend-expect';
+
+jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
 
 jest.mock('react-native/Libraries/Animated/src/NativeAnimatedHelper');
 
@@ -10,5 +12,9 @@ jest.mock('react-native', () => {
   RN.NativeModules.I18nManager = {localeIdentifier: 'en_US'};
   return RN;
 });
+
+mockAsyncStorage.setItem = jest.fn((_key, _value) => {});
+
+mockAsyncStorage.getItem = jest.fn((_key) => {});
 
 setLanguageToI18n();
