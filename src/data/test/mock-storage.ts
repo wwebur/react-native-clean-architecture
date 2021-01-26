@@ -18,7 +18,7 @@ export class StorageMock implements Storage<string> {
     this.key = key;
     return Promise.resolve('');
   }
-  async clear(): Promise<void> {
-    throw new Error('Method not implemented.');
+  async clear(key: string): Promise<void> {
+    this.key = key;
   }
 }
