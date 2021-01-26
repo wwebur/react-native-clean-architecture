@@ -1,28 +1,28 @@
-import {StorageSpy} from '@/data/test/mock-storage';
+import {StorageMock} from '@/data/test/mock-storage';
 import faker from 'faker';
 import {LocalSaveAccessToken} from './local-save-access-token';
 
 type SutTypes = {
   sut: LocalSaveAccessToken;
-  storageSpy: StorageSpy;
+  storageMock: StorageMock;
 };
 
 const makeSut = (): SutTypes => {
-  const storageSpy = new StorageSpy();
-  const sut = new LocalSaveAccessToken(storageSpy);
+  const storageMock = new StorageMock();
+  const sut = new LocalSaveAccessToken(storageMock);
   return {
     sut,
-    storageSpy,
+    storageMock,
   };
 };
 
 describe('LocalSaveAccessToken', () => {
   test('Should call Storage with correct values on set', async () => {
-    const {sut, storageSpy} = makeSut();
+    const {sut, storageMock: storageMock} = makeSut();
     const fakeAccessToken = faker.random.uuid();
     await sut.save(fakeAccessToken);
-    expect(storageSpy.key).toBe('accessToken');
-    expect(storageSpy.value).toBe(fakeAccessToken);
+    expect(storageMock.key).toBe('accessToken');
+    expect(storageMock.value).toBe(fakeAccessToken);
   });
   test('Should return StorageSetError when failed to set information with AsyncStorage', () => {
     // const {sut} = makeSut();

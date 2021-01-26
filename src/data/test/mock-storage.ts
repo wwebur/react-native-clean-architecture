@@ -1,6 +1,6 @@
 import {Storage, StorageValues} from '../protocols/storage/storage';
 
-export class StorageSpy implements Storage {
+export class StorageMock implements Storage {
   key: string;
   value: any;
   async set(key: string, value: StorageValues): Promise<void> {
