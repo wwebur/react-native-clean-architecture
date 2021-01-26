@@ -1,7 +1,5 @@
-export type StorageValues = string | number | boolean;
-
-export interface Storage {
-  set(key: string, value: StorageValues): Promise<void>;
-  get(key: string): Promise<StorageValues>;
+export interface Storage<T> {
+  set(key: string, value: T): Promise<void>;
+  get(key: string): Promise<T>;
   clear(): Promise<void>;
 }
