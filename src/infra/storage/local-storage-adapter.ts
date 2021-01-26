@@ -11,8 +11,8 @@ export class LocalStorageAdapter implements Storage<string> {
     }
   }
   async get(key: string): Promise<string> {
-    console.log(key);
-    return Promise.resolve('');
+    const value = await AsyncStorage.getItem(key);
+    return Promise.resolve(value);
   }
   async clear(key: string): Promise<void> {
     console.log(key);
