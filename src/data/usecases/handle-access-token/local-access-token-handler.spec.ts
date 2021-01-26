@@ -1,4 +1,5 @@
 import {StorageMock} from '@/data/test/mock-storage';
+import {StorageClearError} from '@/domain/errors/storage-clear-error';
 import {StorageGetError} from '@/domain/errors/storage-get-error';
 import {StorageSetError} from '@/domain/errors/storage-set-error';
 import faker from 'faker';
@@ -45,6 +46,17 @@ describe('LocalAccessTokenHandler', () => {
     const promise = sut.load();
     await expect(promise).rejects.toThrow(new StorageGetError());
   });
-  test('Should call AsyncStorage to clear storage', () => {});
-  test('Should return StorageClearError when failed to clear information with AsyncStorage', () => {});
+  test('Should call Storage clear on erase with correct key', async () => {
+    const {sut, storageMock} = makeSut();
+    const clearWatch = jest.spyOn(storageMock, 'clear');
+    await sut.erase();
+    expect(storageMock.key).toBe('accessToken');
+    expect(clearWatch).toHaveBeenCalled();
+  });
+  test('Should return StorageClearError when Storage throws error on clear', async () => {
+    const {sut, storageMock} = makeSut();
+    jest.spyOn(storageMock, 'clear').mockRejectedValueOnce(new Error());
+    const promise = sut.erase();
+    await expect(promise).rejects.toThrow(new StorageClearError());
+  });
 });
