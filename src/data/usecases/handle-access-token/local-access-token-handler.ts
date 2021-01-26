@@ -1,4 +1,5 @@
 import {Storage} from '@/data/protocols/storage/storage';
+import {StorageClearError} from '@/domain/errors/storage-clear-error';
 import {StorageGetError} from '@/domain/errors/storage-get-error';
 import {StorageSetError} from '@/domain/errors/storage-set-error';
 import {HandleAccessToken} from '@/domain/usecases';
@@ -21,6 +22,11 @@ export class LocalAccessTokenHandler implements HandleAccessToken {
     }
   }
   async erase(): Promise<void> {
-    throw new Error('Method not implemented.');
+    try {
+      const value = await this.storage.clear('accessToken');
+      return value;
+    } catch (error) {
+      throw new StorageClearError();
+    }
   }
 }
