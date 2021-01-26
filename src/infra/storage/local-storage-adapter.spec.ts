@@ -1,3 +1,4 @@
+import {StorageGetError} from '@/domain/errors/storage-get-error';
 import {StorageSetError} from '@/domain/errors/storage-set-error';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AsyncStorageMock from '@react-native-async-storage/async-storage/jest/async-storage-mock';
@@ -34,5 +35,13 @@ describe('LocalStorageAdapter', () => {
     });
     const result = await sut.get(key);
     expect(result).toBe(value);
+  });
+  test('Should throw StorageGetError when AsyncStorage throws Error on getItem', async () => {
+    const sut = makeSut();
+    AsyncStorageMock.getItem = jest.fn(() => {
+      return Promise.reject(new Error());
+    });
+    const promise = sut.get(faker.database.column());
+    await expect(promise).rejects.toThrow(new StorageGetError());
   });
 });
