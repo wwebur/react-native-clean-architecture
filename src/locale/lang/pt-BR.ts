@@ -12,5 +12,10 @@ export default {
   errors: {
     invalidCredentialsError: 'Credenciais inválidas',
     unexpectedError: 'Algo de errado aconteceu.Tente novamente em breve.',
+    storageSetError: 'Falha ao registrar dados. Tente novamente em breve.',
+    storageGetError:
+      'Falha ao recuperar dados salvos. Tente novamente em breve.',
+    storageClearError:
+      'Não é possível apager os dados. Tente novamente em breve.',
   },
 };

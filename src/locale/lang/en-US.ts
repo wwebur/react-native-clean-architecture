@@ -12,5 +12,9 @@ export default {
   errors: {
     invalidCredentialsError: 'Invalid credentials',
     unexpectedError: 'An unexpected error occurred. Try again later.',
+    storageSetError: 'Fail to save information. Try again later.',
+    storageGetError: 'Fail to retrieve information. Try again later.',
+    storageClearError:
+      "It's not possible to erase information. Please try again later.",
   },
 };
