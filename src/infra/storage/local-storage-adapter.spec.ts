@@ -44,4 +44,10 @@ describe('LocalStorageAdapter', () => {
     const promise = sut.get(faker.database.column());
     await expect(promise).rejects.toThrow(new StorageGetError());
   });
+  test('Should call AsyncStorage with correct values on clear', async () => {
+    const sut = makeSut();
+    const key = faker.database.column();
+    await sut.clear(key);
+    expect(AsyncStorage.removeItem).toHaveBeenCalledWith(key);
+  });
 });
