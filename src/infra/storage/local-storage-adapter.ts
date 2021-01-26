@@ -1,6 +1,9 @@
 import {Storage} from '@/data/protocols/storage/storage';
-import {StorageGetError} from '@/domain/errors/storage-get-error';
-import {StorageSetError} from '@/domain/errors/storage-set-error';
+import {
+  StorageClearError,
+  StorageGetError,
+  StorageSetError,
+} from '@/domain/errors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export class LocalStorageAdapter implements Storage<string> {
@@ -20,6 +23,10 @@ export class LocalStorageAdapter implements Storage<string> {
     }
   }
   async clear(key: string): Promise<void> {
-    await AsyncStorage.removeItem(key);
+    try {
+      await AsyncStorage.removeItem(key);
+    } catch (error) {
+      throw new StorageClearError();
+    }
   }
 }
