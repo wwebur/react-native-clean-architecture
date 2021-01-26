@@ -15,6 +15,9 @@ export enum DefaultI18n {
 export enum ErrorsI18n {
   invalidCredentialsError = 'errors.invalidCredentialsError',
   unexpectedError = 'errors.unexpectedError',
+  storageSetError = 'errors.storageSetError',
+  storageGetError = 'errors.storageGetError',
+  storageClearError = 'errors.storageClearError',
 }
 
 export type I18nKeys = LoginI18n | ErrorsI18n | DefaultI18n;
