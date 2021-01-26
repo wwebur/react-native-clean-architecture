@@ -1,5 +1,8 @@
-import {StorageGetError} from '@/domain/errors/storage-get-error';
-import {StorageSetError} from '@/domain/errors/storage-set-error';
+import {
+  StorageClearError,
+  StorageGetError,
+  StorageSetError,
+} from '@/domain/errors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AsyncStorageMock from '@react-native-async-storage/async-storage/jest/async-storage-mock';
 import faker from 'faker';
@@ -49,5 +52,13 @@ describe('LocalStorageAdapter', () => {
     const key = faker.database.column();
     await sut.clear(key);
     expect(AsyncStorage.removeItem).toHaveBeenCalledWith(key);
+  });
+  test('Should throw StorageClearError when AsyncStorage throws Error on removeItem', async () => {
+    const sut = makeSut();
+    AsyncStorageMock.removeItem = jest.fn(() => {
+      return Promise.reject(new Error());
+    });
+    const promise = sut.clear(faker.database.column());
+    await expect(promise).rejects.toThrow(new StorageClearError());
   });
 });
