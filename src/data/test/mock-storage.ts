@@ -1,9 +1,9 @@
-import {Storage, StorageValues} from '../protocols/storage/storage';
+import {Storage} from '../protocols/storage/storage';
 
-export class StorageMock implements Storage {
+export class StorageMock implements Storage<string> {
   key: string;
   value: any;
-  async set(key: string, value: StorageValues): Promise<void> {
+  async set(key: string, value: string): Promise<void> {
     this.key = key;
     this.value = value;
     // try {
@@ -14,9 +14,9 @@ export class StorageMock implements Storage {
     //   throw new StorageSetError();
     // }
   }
-  async get(key: string): Promise<StorageValues> {
+  async get(key: string): Promise<string> {
     this.key = key;
-    throw new Error('Method not implemented.');
+    return Promise.resolve('');
   }
   async clear(): Promise<void> {
     throw new Error('Method not implemented.');
