@@ -5,6 +5,7 @@ import {
   fillInputByTestID,
   fillInputs,
   getInputCaptionByContainer,
+  HandleAccessTokenMock,
   ValidationSpy,
 } from '@/presentation/test';
 import {DisplaySpy} from '@/presentation/test/mock-display';
@@ -26,7 +27,7 @@ type SutTypes = {
   validationSpy: ValidationSpy;
   authenticationSpy: AuthenticationSpy;
   displaySpy: DisplaySpy;
-  // storageSpy: StorageSpy;
+  handleAccessTokenMock: HandleAccessTokenMock;
 };
 
 type SutParams = {
@@ -38,6 +39,7 @@ const makeSut = (params?: SutParams): SutTypes => {
   validationSpy.errors = params?.validationErrors;
   const authenticationSpy = new AuthenticationSpy();
   const displaySpy = new DisplaySpy();
+  const handleAccessTokenMock = new HandleAccessTokenMock();
   // const storageSpy = new StorageSpy();
   const sut = render(
     <ApplicationProviderMock>
@@ -45,6 +47,7 @@ const makeSut = (params?: SutParams): SutTypes => {
         validation={validationSpy}
         authentication={authenticationSpy}
         display={displaySpy}
+        handleAccessToken={handleAccessTokenMock}
       />
     </ApplicationProviderMock>,
   );
@@ -53,7 +56,7 @@ const makeSut = (params?: SutParams): SutTypes => {
     validationSpy,
     authenticationSpy,
     displaySpy,
-    // storageSpy,
+    handleAccessTokenMock,
   };
 };
 
@@ -207,14 +210,13 @@ describe('Login Page', () => {
     expect(spinner.length).toBe(0);
   });
 
-  test('Should add access token to Storage on success', async () => {
-    // const {sut, authenticationSpy} = makeSut();
-    // await waitFor(() => {
-    //   fillInputs(sut);
-    // });
-    // expect(storage.setItem).toHaveBeenCalledWith(
-    //   'accessToken',
-    //   authenticationSpy.account.accessToken,
-    // );
+  test('Should call HandleAccessToken on success', async () => {
+    const {sut, authenticationSpy, handleAccessTokenMock} = makeSut();
+    await waitFor(() => {
+      fillInputs(sut);
+    });
+    expect(handleAccessTokenMock.accessToken).toBe(
+      authenticationSpy.account.accessToken,
+    );
   });
 });
