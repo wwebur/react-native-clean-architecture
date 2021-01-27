@@ -1,4 +1,4 @@
-import {Authentication} from '@/domain/usecases';
+import {Authentication, HandleAccessToken} from '@/domain/usecases';
 import {DefaultI18n, LoginI18n, translate} from '@/locale';
 import {Display, Validation} from '@/presentation/protocols';
 import {LoginFormValues} from '@/presentation/types';
@@ -24,9 +24,15 @@ type LoginProps = {
   validation: Validation<LoginFormValues>;
   authentication: Authentication;
   display: Display;
+  handleAccessToken: HandleAccessToken;
 };
 
-const Login: React.FC<LoginProps> = ({validation, authentication, display}) => {
+const Login: React.FC<LoginProps> = ({
+  validation,
+  authentication,
+  display,
+  handleAccessToken,
+}) => {
   const theme = useTheme();
 
   const initialValues: LoginFormValues = {email: '', password: ''};
@@ -43,14 +49,13 @@ const Login: React.FC<LoginProps> = ({validation, authentication, display}) => {
       if (loading) {
         return;
       }
-      console.log(values);
       setLoading(true);
-      await authentication.auth({
+      const account = await authentication.auth({
         email: values.email,
         password: values.password,
       });
+      await handleAccessToken.save(account.accessToken);
     } catch (error) {
-      console.log('trow error', error.message);
       setLoading(false);
       display.show({title: 'Oops!', description: error.message});
     }
