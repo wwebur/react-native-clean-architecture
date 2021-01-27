@@ -1,4 +1,4 @@
-import {InvalidCredentialsError} from '@/domain/errors';
+import {InvalidCredentialsError, StorageSetError} from '@/domain/errors';
 import {
   ApplicationProviderMock,
   AuthenticationSpy,
@@ -40,7 +40,6 @@ const makeSut = (params?: SutParams): SutTypes => {
   const authenticationSpy = new AuthenticationSpy();
   const displaySpy = new DisplaySpy();
   const handleAccessTokenMock = new HandleAccessTokenMock();
-  // const storageSpy = new StorageSpy();
   const sut = render(
     <ApplicationProviderMock>
       <Login
@@ -95,9 +94,6 @@ export const assertValueForInput = (
 
 describe('Login Page', () => {
   afterEach(cleanup);
-  beforeEach(() => {
-    // storage.clear();
-  });
 
   test('Should start with initial state', () => {
     const {sut} = makeSut();
@@ -218,5 +214,17 @@ describe('Login Page', () => {
     expect(handleAccessTokenMock.accessToken).toBe(
       authenticationSpy.account.accessToken,
     );
+  });
+  test('Should call Display with correct message if HandleAccessToken fails', async () => {
+    const {sut, displaySpy, handleAccessTokenMock} = makeSut();
+    const error = new StorageSetError();
+    jest
+      .spyOn(handleAccessTokenMock, 'save')
+      .mockReturnValueOnce(Promise.reject(error));
+    await waitFor(() => {
+      fillInputs(sut);
+    });
+    expect(displaySpy.title).toBe('Oops!');
+    expect(displaySpy.description).toBe(error.message);
   });
 });
