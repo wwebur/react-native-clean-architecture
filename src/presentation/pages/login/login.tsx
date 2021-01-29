@@ -1,7 +1,10 @@
 import {Authentication, HandleAccessToken} from '@/domain/usecases';
 import {DefaultI18n, LoginI18n, translate} from '@/locale';
 import {Display, Validation} from '@/presentation/protocols';
+import {RootStackParamList} from '@/presentation/routes';
+import {GlobalStyles} from '@/presentation/styles';
 import {LoginFormValues} from '@/presentation/types';
+import {StackNavigationProp} from '@react-navigation/stack';
 import {
   Button,
   Icon,
@@ -20,11 +23,17 @@ import {
   View,
 } from 'react-native';
 
+type LoginScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  'Login'
+>;
+
 type LoginProps = {
   validation: Validation<LoginFormValues>;
   authentication: Authentication;
   display: Display;
   handleAccessToken: HandleAccessToken;
+  navigation: LoginScreenNavigationProp;
 };
 
 const Login: React.FC<LoginProps> = ({
@@ -32,6 +41,7 @@ const Login: React.FC<LoginProps> = ({
   authentication,
   display,
   handleAccessToken,
+  navigation,
 }) => {
   const theme = useTheme();
 
@@ -65,16 +75,19 @@ const Login: React.FC<LoginProps> = ({
     <>
       <SafeAreaView
         style={[
-          styles.topSafeArea,
+          GlobalStyles.topSafeArea,
           {backgroundColor: theme['background-basic-color-4']},
         ]}
       />
       <SafeAreaView
         style={[
-          styles.bottomSafeArea,
+          GlobalStyles.bottomSafeArea,
           {backgroundColor: theme['background-basic-color-1']},
         ]}>
-        <Layout style={styles.container} level="4">
+        <Layout
+          style={GlobalStyles.container}
+          level="4"
+          testID="login_page_container">
           <Layout style={styles.logoContainer} level="4" />
 
           <Formik
@@ -194,6 +207,7 @@ const Login: React.FC<LoginProps> = ({
                     {translate(LoginI18n.forgotPassword)}
                   </Text>
                   <Button
+                    onPress={() => navigation.navigate('SignUp')}
                     testID="sign_up_button"
                     size="large"
                     style={styles.signupButton}
@@ -211,9 +225,6 @@ const Login: React.FC<LoginProps> = ({
 };
 
 const styles = StyleSheet.create({
-  bottomSafeArea: {flex: 1},
-  topSafeArea: {flex: 0},
-  container: {flex: 1},
   logoContainer: {flex: 1, width: '100%'},
   formContainer: {
     flex: 3,
