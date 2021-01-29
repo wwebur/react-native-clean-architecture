@@ -9,6 +9,7 @@ import {
   ValidationSpy,
 } from '@/presentation/test';
 import {DisplaySpy} from '@/presentation/test/mock-display';
+import {NavigationStub} from '@/presentation/test/mock-navigation';
 import {LoginFormValues} from '@/presentation/types';
 import {
   cleanup,
@@ -28,6 +29,7 @@ type SutTypes = {
   authenticationSpy: AuthenticationSpy;
   displaySpy: DisplaySpy;
   handleAccessTokenMock: HandleAccessTokenMock;
+  navigationStub: NavigationStub<'Login'>;
 };
 
 type SutParams = {
@@ -40,6 +42,7 @@ const makeSut = (params?: SutParams): SutTypes => {
   const authenticationSpy = new AuthenticationSpy();
   const displaySpy = new DisplaySpy();
   const handleAccessTokenMock = new HandleAccessTokenMock();
+  const navigationStub = new NavigationStub<'Login'>();
   const sut = render(
     <ApplicationProviderMock>
       <Login
@@ -47,6 +50,7 @@ const makeSut = (params?: SutParams): SutTypes => {
         authentication={authenticationSpy}
         display={displaySpy}
         handleAccessToken={handleAccessTokenMock}
+        navigation={navigationStub}
       />
     </ApplicationProviderMock>,
   );
@@ -56,6 +60,7 @@ const makeSut = (params?: SutParams): SutTypes => {
     authenticationSpy,
     displaySpy,
     handleAccessTokenMock,
+    navigationStub,
   };
 };
 
@@ -226,5 +231,15 @@ describe('Login Page', () => {
     });
     expect(displaySpy.title).toBe('Oops!');
     expect(displaySpy.description).toBe(error.message);
+  });
+
+  test('Should go to SignUp page', async () => {
+    const {sut, navigationStub} = makeSut();
+    const signUpButton = sut.getByTestId('sign_up_button');
+    const navigateFunctionSpy = jest.spyOn(navigationStub, 'navigate');
+    await waitFor(() => {
+      fireEvent.press(signUpButton);
+    });
+    expect(navigateFunctionSpy).toHaveBeenCalledWith('SignUp');
   });
 });
