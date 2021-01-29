@@ -9,7 +9,7 @@ module.exports = {
     '^.+\\.(js|ts|tsx)$': 'babel-jest',
   },
   transformIgnorePatterns: [
-    'node_modules/(?!(jest-)?react-native|react-navigation|@react-native-community|@ui-kitten|native-base-shoutem-theme)',
+    'node_modules/(?!(jest-)?react-native|react-navigation|@react-native-community|@ui-kitten|native-base-shoutem-theme|@react-navigation)',
   ],
   moduleNameMapper: {
     '@/(.*)': '<rootDir>/src/$1',
