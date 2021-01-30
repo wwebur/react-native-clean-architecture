@@ -211,15 +211,23 @@ describe('Login Page', () => {
     expect(spinner.length).toBe(0);
   });
 
-  test('Should call HandleAccessToken on success', async () => {
-    const {sut, authenticationSpy, handleAccessTokenMock} = makeSut();
+  test('Should call HandleAccessToken on success and navigate to Home page', async () => {
+    const {
+      sut,
+      authenticationSpy,
+      handleAccessTokenMock,
+      navigationStub,
+    } = makeSut();
+    const navigateFunctionSpy = jest.spyOn(navigationStub, 'navigate');
     await waitFor(() => {
       fillInputs(sut);
     });
     expect(handleAccessTokenMock.accessToken).toBe(
       authenticationSpy.account.accessToken,
     );
+    expect(navigateFunctionSpy).toHaveBeenCalledWith('Home');
   });
+
   test('Should call Display with correct message if HandleAccessToken fails', async () => {
     const {sut, displaySpy, handleAccessTokenMock} = makeSut();
     const error = new StorageSetError();
