@@ -1,9 +1,10 @@
 import {Authentication, HandleAccessToken} from '@/domain/usecases';
 import {DefaultI18n, LoginI18n, translate} from '@/locale';
-import {Display, Validation} from '@/presentation/protocols';
+import {Display} from '@/presentation/protocols';
 import {RootStackParamList} from '@/presentation/routes';
 import {GlobalStyles} from '@/presentation/styles';
 import {LoginFormValues} from '@/presentation/types';
+import {Validation} from '@/validation/protocols';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {
   Button,
