@@ -65,6 +65,7 @@ const Login: React.FC<LoginProps> = ({
         password: values.password,
       });
       await handleAccessToken.save(account.accessToken);
+      navigation.navigate('Home');
     } catch (error) {
       setLoading(false);
       display.show({title: 'Oops!', description: error.message});
