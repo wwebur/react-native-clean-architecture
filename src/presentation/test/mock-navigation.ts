@@ -12,7 +12,9 @@ import {
 import {StackNavigationEventMap} from '@react-navigation/stack/lib/typescript/src/types';
 import {RootStackParamList} from '../routes';
 
-export class NavigationStub<P extends 'Login' | 'SignUp'>
+type Routes = 'Login' | 'SignUp' | 'Home';
+
+export class NavigationStub<P extends Routes>
   implements StackNavigationProp<RootStackParamList, P> {
   action:
     | Readonly<{
@@ -63,7 +65,7 @@ export class NavigationStub<P extends 'Login' | 'SignUp'>
     this.action = action;
   }
 
-  navigate<RouteName extends 'Login' | 'SignUp'>(route: {
+  navigate<RouteName extends Routes>(route: {
     name: RouteName;
     key?: string;
     params: RootStackParamList[RouteName];
@@ -119,7 +121,7 @@ export class NavigationStub<P extends 'Login' | 'SignUp'>
   dangerouslyGetState(): StackNavigationState<RootStackParamList> {
     throw new Error('Method not implemented.');
   }
-  protected?: {a: RootStackParamList; b: 'Login' | 'SignUp'; c: {}} & {
+  protected?: {a: RootStackParamList; b: Routes; c: {}} & {
     a: RootStackParamList;
     b: 'Login';
     c: StackNavigationEventMap;
@@ -180,14 +182,14 @@ export class NavigationStub<P extends 'Login' | 'SignUp'>
     this.eventCallback = callback;
   }
 
-  replace<RouteName extends 'Login' | 'SignUp'>(
+  replace<RouteName extends Routes>(
     ...args: undefined extends RootStackParamList[RouteName]
       ? [RouteName] | [RouteName, RootStackParamList[RouteName]]
       : [RouteName, RootStackParamList[RouteName]]
   ): void {
     this.key = args.keys()[0];
   }
-  push<RouteName extends 'Login' | 'SignUp'>(
+  push<RouteName extends Routes>(
     ...args: undefined extends RootStackParamList[RouteName]
       ? [RouteName] | [RouteName, RootStackParamList[RouteName]]
       : [RouteName, RootStackParamList[RouteName]]
