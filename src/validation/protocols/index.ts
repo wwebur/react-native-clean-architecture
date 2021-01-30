@@ -1,2 +1,2 @@
-export * from './filed-validation';
+export * from './field-validation';
 export * from './validation';
