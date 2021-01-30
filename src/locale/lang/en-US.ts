@@ -16,5 +16,6 @@ export default {
     storageGetError: 'Fail to retrieve information. Try again later.',
     storageClearError:
       "It's not possible to erase information. Please try again later.",
+    requiredFieldError: 'Required field',
   },
 };

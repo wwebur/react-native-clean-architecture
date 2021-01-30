@@ -17,5 +17,6 @@ export default {
       'Falha ao recuperar dados salvos. Tente novamente em breve.',
     storageClearError:
       'Não é possível apager os dados. Tente novamente em breve.',
+    requiredFieldError: 'Campo obrigatório',
   },
 };
