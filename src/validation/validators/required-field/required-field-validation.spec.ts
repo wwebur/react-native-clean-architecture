@@ -1,5 +1,5 @@
 import faker from 'faker';
-import {RequiredFieldError} from '../errors';
+import {RequiredFieldError} from '../../errors';
 import {RequiredFieldValidation} from './required-field-validation';
 
 type FakeFormValues = {
