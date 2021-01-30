@@ -19,6 +19,8 @@ export enum ErrorsI18n {
   storageGetError = 'errors.storageGetError',
   storageClearError = 'errors.storageClearError',
   requiredFieldError = 'errors.requiredFieldError',
+  invalidEmailFieldError = 'errors.invalidEmailFieldError',
+  invalidOtherFieldError = 'errors.invalidOtherFieldError',
 }
 
 export type I18nKeys = LoginI18n | ErrorsI18n | DefaultI18n;

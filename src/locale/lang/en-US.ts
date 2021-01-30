@@ -17,5 +17,7 @@ export default {
     storageClearError:
       "It's not possible to erase information. Please try again later.",
     requiredFieldError: 'Required field',
+    invalidEmailFieldError: 'Invalid Email',
+    invalidOtherFieldError: 'Invalid Field',
   },
 };

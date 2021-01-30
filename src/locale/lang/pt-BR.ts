@@ -18,5 +18,7 @@ export default {
     storageClearError:
       'Não é possível apager os dados. Tente novamente em breve.',
     requiredFieldError: 'Campo obrigatório',
+    invalidEmailFieldError: 'E-mail inválido',
+    invalidOtherFieldError: 'Campo inválido',
   },
 };
