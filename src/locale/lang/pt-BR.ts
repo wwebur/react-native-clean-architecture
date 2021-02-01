@@ -21,4 +21,7 @@ export default {
     invalidEmailFieldError: 'E-mail inválido',
     invalidOtherFieldError: 'Campo inválido',
   },
+  tests: {
+    helloWorld: 'Olá Mundo $ $',
+  },
 };

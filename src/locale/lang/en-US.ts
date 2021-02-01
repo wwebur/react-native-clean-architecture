@@ -20,4 +20,7 @@ export default {
     invalidEmailFieldError: 'Invalid Email',
     invalidOtherFieldError: 'Invalid Field',
   },
+  tests: {
+    helloWorld: 'Hello World $ $',
+  },
 };
