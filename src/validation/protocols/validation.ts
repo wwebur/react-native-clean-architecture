@@ -1,3 +1,3 @@
-export interface Validation<T> {
-  validate: (values: T) => void | T;
+export interface Validation {
+  validate: (values: object) => void | object;
 }

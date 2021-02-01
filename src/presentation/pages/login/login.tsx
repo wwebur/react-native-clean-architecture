@@ -30,7 +30,7 @@ type LoginScreenNavigationProp = StackNavigationProp<
 >;
 
 type LoginProps = {
-  validation: Validation<LoginFormValues>;
+  validation: Validation;
   authentication: Authentication;
   display: Display;
   handleAccessToken: HandleAccessToken;
