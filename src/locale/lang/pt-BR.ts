@@ -20,6 +20,7 @@ export default {
     requiredFieldError: 'Campo obrigatório',
     invalidEmailFieldError: 'E-mail inválido',
     invalidOtherFieldError: 'Campo inválido',
+    minLengthError: '$ deve ter pelo menos $ caracteres',
   },
   tests: {
     helloWorld: 'Olá Mundo $ $',

@@ -1,6 +1,13 @@
+import {ErrorsI18n, translateAndReplaceWithArray} from '@/locale';
+
 export class MinLengthError extends Error {
   constructor(fieldName: string, requiredLength: number) {
-    super(`${fieldName} must be at least ${requiredLength} characters`);
+    super(
+      translateAndReplaceWithArray(ErrorsI18n.minLengthError, [
+        fieldName,
+        requiredLength.toString(),
+      ]),
+    );
     this.name = 'MinLengthError';
   }
 }

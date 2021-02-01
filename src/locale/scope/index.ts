@@ -26,6 +26,7 @@ export enum ErrorsI18n {
   requiredFieldError = 'errors.requiredFieldError',
   invalidEmailFieldError = 'errors.invalidEmailFieldError',
   invalidOtherFieldError = 'errors.invalidOtherFieldError',
+  minLengthError = 'errors.minLengthError',
 }
 
 export type I18nKeys = LoginI18n | ErrorsI18n | DefaultI18n | TestsI18n;
