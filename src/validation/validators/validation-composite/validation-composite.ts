@@ -1,7 +1,12 @@
 import {FieldValidation, Validation} from '@/validation/protocols';
 
 export class ValidationComposite implements Validation {
-  constructor(private readonly validators: FieldValidation[]) {}
+  private constructor(private readonly validators: FieldValidation[]) {}
+
+  static build(validators: FieldValidation[]): ValidationComposite {
+    return new ValidationComposite(validators);
+  }
+
   validate(values: object): void | object {
     const errors = {};
     for (const fieldName in values) {
