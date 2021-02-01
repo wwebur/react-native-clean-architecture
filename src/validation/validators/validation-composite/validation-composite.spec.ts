@@ -1,26 +1,31 @@
 import {FieldValidationSpy} from '@/validation/test';
 import {ValidationComposite} from './validation-composite';
 
+type SutTypes = {
+  sut: ValidationComposite;
+  fieldValidationSpies: FieldValidationSpy[];
+};
+
+const makeSut = (): SutTypes => {
+  const fieldValidationSpies = [
+    new FieldValidationSpy('any_field'),
+    new FieldValidationSpy('any_field'),
+  ];
+  const sut = new ValidationComposite(fieldValidationSpies);
+  return {
+    sut,
+    fieldValidationSpies,
+  };
+};
+
 describe('ValidationComposite', () => {
   test('Should return error if any validation fails', () => {
-    const fieldValidationSpy1 = new FieldValidationSpy('email');
-    fieldValidationSpy1.error = new Error('any_error_message1');
-
-    const fieldValidationSpy2 = new FieldValidationSpy('email');
-    fieldValidationSpy2.error = new Error('any_error_message2');
-
-    const fieldValidationSpy3 = new FieldValidationSpy('password');
-    fieldValidationSpy3.error = new Error('any_error_message3');
-
-    const sut = new ValidationComposite([
-      fieldValidationSpy1,
-      fieldValidationSpy2,
-      fieldValidationSpy3,
-    ]);
-    const errors = sut.validate({email: 'any_value', password: 'any_value'});
+    const {sut, fieldValidationSpies} = makeSut();
+    fieldValidationSpies[0].error = new Error('any_error_message1');
+    fieldValidationSpies[1].error = new Error('any_error_message2');
+    const errors = sut.validate({any_field: 'any_value'});
     expect(errors).toEqual({
-      email: 'any_error_message2',
-      password: 'any_error_message3',
+      any_field: 'any_error_message1',
     });
   });
 });
