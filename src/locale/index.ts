@@ -45,4 +45,33 @@ export function translate(key: I18nKeys): string {
   return I18n.t(key);
 }
 
+export function translateAndReplaceWithString(
+  key: I18nKeys,
+  replaceText: string,
+): string {
+  const rawText = I18n.t(key);
+  return rawText.replace('$', replaceText);
+}
+
+export function translateAndReplaceWithArray(
+  key: I18nKeys,
+  replaceArray: string[],
+): string {
+  const rawText = I18n.t(key);
+  return replaceTextWithArray(rawText, replaceArray);
+}
+
+export function replaceTextWithArray(
+  text: string,
+  stringsToInsert: string[],
+): string {
+  if (text.includes('$')) {
+    const stringsToInsertCopy = [...stringsToInsert.reverse()];
+    const element = stringsToInsertCopy.pop();
+    const newText = text.replace('$', element);
+    return replaceTextWithArray(newText, stringsToInsertCopy.reverse());
+  }
+  return text;
+}
+
 export * from './scope';
