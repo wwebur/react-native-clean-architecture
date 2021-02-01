@@ -1,18 +1,7 @@
 import {FieldValidation, Validation} from '@/validation/protocols';
 
 export class ValidationComposite implements Validation {
-  constructor(private readonly validators: FieldValidation[]) {
-    this.validators = validators.sort((a, b) => {
-      if (a.precedence === b.precedence) {
-        return;
-      }
-      if (a.precedence > b.precedence) {
-        return 1;
-      } else {
-        return -1;
-      }
-    });
-  }
+  constructor(private readonly validators: FieldValidation[]) {}
   validate(values: object): void | object {
     const errors = {};
     for (const fieldName in values) {
@@ -25,6 +14,7 @@ export class ValidationComposite implements Validation {
         const errorMessage = validator.validate(fieldValue);
         if (errorMessage) {
           errors[fieldName] = errorMessage.message;
+          break;
         }
       }
     }
