@@ -2,7 +2,7 @@ import {RequiredFieldError} from '../../errors';
 import {FieldValidation} from '../../protocols';
 
 export class RequiredFieldValidation implements FieldValidation {
-  constructor(readonly field: string, readonly precedence: number = 1) {}
+  constructor(readonly field: string) {}
 
   validate(value: string): Error {
     if (!value) {
