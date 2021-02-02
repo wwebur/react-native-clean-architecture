@@ -1,6 +1,7 @@
 import {Authentication, HandleAccessToken} from '@/domain/usecases';
 import {DisplayMessage} from '@/domain/usecases/display-message';
 import {DefaultI18n, LoginI18n, translate} from '@/locale';
+import {KeyboardDismiss} from '@/presentation/components';
 import {RootStackParamList} from '@/presentation/routes';
 import {GlobalStyles} from '@/presentation/styles';
 import {LoginFormValues} from '@/presentation/types';
@@ -16,7 +17,7 @@ import {
   useTheme,
 } from '@ui-kitten/components';
 import {Formik} from 'formik';
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -50,6 +51,9 @@ const Login: React.FC<LoginProps> = ({
 
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [loading, setLoading] = useState(false);
+
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
 
   const toggleSecureEntry = () => {
     setSecureTextEntry((prevSecuryTextEntry) => !prevSecuryTextEntry);
@@ -86,141 +90,148 @@ const Login: React.FC<LoginProps> = ({
           GlobalStyles.bottomSafeArea,
           {backgroundColor: theme['background-basic-color-1']},
         ]}>
-        <Layout
-          style={GlobalStyles.container}
-          level="4"
-          testID="login_page_container">
-          <Layout style={styles.logoContainer} level="4" />
+        <KeyboardDismiss>
+          <Layout
+            style={GlobalStyles.container}
+            level="4"
+            testID="login_page_container">
+            <Layout style={styles.logoContainer} level="4" />
 
-          <Formik
-            validateOnMount={false}
-            validateOnChange
-            validateOnBlur
-            initialValues={initialValues}
-            validate={(values) => {
-              return validation.validate({
-                email: values.email,
-                password: values.password,
-              });
-            }}
-            onSubmit={onSubmit}>
-            {({
-              handleChange,
-              handleBlur,
-              handleSubmit,
-              values,
-              touched,
-              errors,
-              setFieldTouched,
-            }) => (
-              <Layout testID="form_container" style={styles.formContainer}>
-                <Text category="h1">{translate(LoginI18n.login)}</Text>
-                <Text category="s1" appearance="hint" style={styles.subtitle}>
-                  {translate(LoginI18n.subtitle)}
-                </Text>
-                <View testID="email_input_container">
-                  <Input
-                    testID="email_input"
-                    autoCapitalize="none"
-                    size="large"
-                    value={values.email}
-                    onChangeText={handleChange('email')}
-                    onBlur={handleBlur('email')}
-                    accessoryLeft={(props) => (
-                      <Icon {...props} name="email-outline" />
-                    )}
-                    style={styles.emailInput}
-                    label={translate(DefaultI18n.email)}
-                    placeholder="Ex: john@doe.com"
-                    onSubmitEditing={() => setFieldTouched('email', true)}
-                    status={touched.email && errors.email ? 'danger' : 'basic'}
-                    captionIcon={
-                      touched.email && errors.email
-                        ? (props) => <Icon {...props} name="info-outline" />
-                        : null
-                    }
-                    caption={
-                      touched.email && errors.email ? errors.email : null
-                    }
-                  />
-                </View>
-                <View testID="password_input_container">
-                  <Input
-                    testID="password_input"
-                    size="large"
-                    autoCapitalize="none"
-                    value={values.password}
-                    onChangeText={handleChange('password')}
-                    onBlur={handleBlur('password')}
-                    accessoryLeft={(props) => (
-                      <Icon {...props} name="lock-outline" />
-                    )}
-                    accessoryRight={(props) => (
-                      <TouchableWithoutFeedback
-                        testID="visibility_touchable"
-                        onPress={toggleSecureEntry}>
-                        <Icon
-                          {...props}
-                          name={secureTextEntry ? 'eye-off' : 'eye'}
-                        />
-                      </TouchableWithoutFeedback>
-                    )}
-                    style={styles.passwordInput}
-                    label={translate(DefaultI18n.password)}
-                    placeholder="**********"
-                    secureTextEntry={secureTextEntry}
-                    onSubmitEditing={() => setFieldTouched('password', true)}
-                    status={
-                      touched.password && errors.password ? 'danger' : 'basic'
-                    }
-                    captionIcon={
-                      touched.password && errors.password
-                        ? (props) => <Icon {...props} name="info-outline" />
-                        : null
-                    }
-                    caption={
-                      touched.password && errors.password
-                        ? errors.password
-                        : null
-                    }
-                  />
-                </View>
-                <Layout
-                  testID="buttons_container"
-                  style={styles.buttonsContainer}>
-                  <Button
-                    accessoryLeft={
-                      loading
-                        ? (props) => <Spinner {...props} testID="spinner" />
-                        : null
-                    }
-                    disabled={!!errors.email || !!errors.password || loading}
-                    testID="login_button"
-                    size="large"
-                    onPress={handleSubmit}>
-                    {translate(LoginI18n.login)}
-                  </Button>
-                  <Text
-                    testID="forgot_password_text"
-                    status="danger"
-                    category="s2"
-                    appearance="hint"
-                    style={styles.forgotPassword}>
-                    {translate(LoginI18n.forgotPassword)}
+            <Formik
+              validateOnMount={false}
+              validateOnChange
+              validateOnBlur
+              initialValues={initialValues}
+              validate={(values) => {
+                return validation.validate({
+                  email: values.email,
+                  password: values.password,
+                });
+              }}
+              onSubmit={onSubmit}>
+              {({
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                values,
+                touched,
+                errors,
+                setFieldTouched,
+              }) => (
+                <Layout testID="form_container" style={styles.formContainer}>
+                  <Text category="h1">{translate(LoginI18n.login)}</Text>
+                  <Text category="s1" appearance="hint" style={styles.subtitle}>
+                    {translate(LoginI18n.subtitle)}
                   </Text>
-                  <Button
-                    onPress={() => navigation.navigate('SignUp')}
-                    testID="sign_up_button"
-                    size="large"
-                    style={styles.signupButton}
-                    appearance="outline">
-                    {translate(LoginI18n.signUp)}
-                  </Button>
+                  <View testID="email_input_container">
+                    <Input
+                      ref={emailRef}
+                      testID="email_input"
+                      autoCapitalize="none"
+                      size="large"
+                      value={values.email}
+                      onChangeText={handleChange('email')}
+                      onBlur={handleBlur('email')}
+                      accessoryLeft={(props) => (
+                        <Icon {...props} name="email-outline" />
+                      )}
+                      style={styles.emailInput}
+                      label={translate(DefaultI18n.email)}
+                      placeholder="Ex: john@doe.com"
+                      onSubmitEditing={() => {
+                        setFieldTouched('email', true);
+                        passwordRef?.current.focus();
+                      }}
+                      status={
+                        touched.email && errors.email ? 'danger' : 'basic'
+                      }
+                      captionIcon={
+                        touched.email && errors.email
+                          ? (props) => <Icon {...props} name="info-outline" />
+                          : null
+                      }
+                      caption={
+                        touched.email && errors.email ? errors.email : null
+                      }
+                    />
+                  </View>
+                  <View testID="password_input_container">
+                    <Input
+                      ref={passwordRef}
+                      testID="password_input"
+                      size="large"
+                      autoCapitalize="none"
+                      value={values.password}
+                      onChangeText={handleChange('password')}
+                      onBlur={handleBlur('password')}
+                      accessoryLeft={(props) => (
+                        <Icon {...props} name="lock-outline" />
+                      )}
+                      accessoryRight={(props) => (
+                        <TouchableWithoutFeedback
+                          testID="visibility_touchable"
+                          onPress={toggleSecureEntry}>
+                          <Icon
+                            {...props}
+                            name={secureTextEntry ? 'eye-off' : 'eye'}
+                          />
+                        </TouchableWithoutFeedback>
+                      )}
+                      style={styles.passwordInput}
+                      label={translate(DefaultI18n.password)}
+                      placeholder="**********"
+                      secureTextEntry={secureTextEntry}
+                      onSubmitEditing={() => setFieldTouched('password', true)}
+                      status={
+                        touched.password && errors.password ? 'danger' : 'basic'
+                      }
+                      captionIcon={
+                        touched.password && errors.password
+                          ? (props) => <Icon {...props} name="info-outline" />
+                          : null
+                      }
+                      caption={
+                        touched.password && errors.password
+                          ? errors.password
+                          : null
+                      }
+                    />
+                  </View>
+                  <Layout
+                    testID="buttons_container"
+                    style={styles.buttonsContainer}>
+                    <Button
+                      accessoryLeft={
+                        loading ? () => <Spinner testID="spinner" /> : null
+                      }
+                      disabled={!!errors.email || !!errors.password || loading}
+                      testID="login_button"
+                      size="large"
+                      onPress={handleSubmit}>
+                      {translate(LoginI18n.login)}
+                    </Button>
+                    <Text
+                      testID="forgot_password_text"
+                      status="danger"
+                      category="s2"
+                      appearance="hint"
+                      style={styles.forgotPassword}>
+                      {translate(LoginI18n.forgotPassword)}
+                    </Text>
+                    <Button
+                      onPress={() => navigation.navigate('SignUp')}
+                      testID="sign_up_button"
+                      size="large"
+                      style={styles.signupButton}
+                      appearance="outline">
+                      {translate(LoginI18n.signUp)}
+                    </Button>
+                  </Layout>
                 </Layout>
-              </Layout>
-            )}
-          </Formik>
-        </Layout>
+              )}
+            </Formik>
+          </Layout>
+        </KeyboardDismiss>
       </SafeAreaView>
     </>
   );
