@@ -18,11 +18,16 @@ describe('DisplayFeedbackMessage', () => {
   test('Should call MessagePresenter with correct values on set', () => {
     const {sut, messagePresenterSpy} = makeSut();
     const fakeMessage = makeFakeMessage();
-    sut.show({title: fakeMessage.title, description: fakeMessage.description});
+    sut.show(
+      {title: fakeMessage.title, description: fakeMessage.description},
+      {appearance: 'floating', type: 'default'},
+    );
     expect(messagePresenterSpy.message.title).toBe(fakeMessage.title);
     expect(messagePresenterSpy.message.description).toBe(
       fakeMessage.description,
     );
+    expect(messagePresenterSpy.options.appearance).toBe('floating');
+    expect(messagePresenterSpy.options.type).toBe('default');
   });
 
   test('Should throw error if MessagePresenter throws error', () => {

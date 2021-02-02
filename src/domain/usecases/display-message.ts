@@ -1,5 +1,5 @@
-import {Message} from '../models';
+import {Message, MessageOptions} from '../models';
 
 export interface DisplayMessage {
-  show(message: Message): Promise<void>;
+  show(message: Message, options?: MessageOptions): Promise<void>;
 }
