@@ -2,6 +2,10 @@
   "name": "RNCleanArchitecture",
   "version": "0.0.1",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vitorverasm/react-native-clean-architecture.git"
+  },
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
@@ -12,7 +16,8 @@
     "test:ci": "npm test -- --coverage",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "storybook": "start-storybook -p 7007",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "release": "dotenv release-it --"
   },
   "dependencies": {
     "@eva-design/eva": "^2.0.0",
@@ -39,6 +44,7 @@
     "@babel/plugin-proposal-decorators": "^7.12.12",
     "@babel/runtime": "^7.8.4",
     "@react-native-community/eslint-config": "^1.1.0",
+    "@release-it/conventional-changelog": "^2.0.0",
     "@storybook/addon-actions": "^5.3",
     "@storybook/addon-knobs": "^5.3",
     "@storybook/addon-links": "^5.3",
@@ -60,6 +66,7 @@
     "babel-jest": "^25.1.0",
     "babel-loader": "^8.2.2",
     "babel-plugin-module-resolver": "^4.1.0",
+    "dotenv-cli": "^4.0.0",
     "eslint": "^6.5.1",
     "eslint-config-standard-with-typescript": "^19.0.1",
     "eslint-plugin-import": "^2.22.1",
@@ -74,7 +81,22 @@
     "metro-react-native-babel-preset": "^0.59.0",
     "react-dom": "16.13.1",
     "react-test-renderer": "16.13.1",
+    "release-it": "^14.2.2",
     "ts-jest": "^26.4.4",
     "typescript": "^3.8.3"
+  },
+  "release-it": {
+    "git": {
+      "commitMessage": "chore: release v${version}"
+    },
+    "github": {
+      "release": true
+    },
+    "plugins": {
+      "@release-it/conventional-changelog": {
+        "preset": "angular",
+        "infile": "CHANGELOG.md"
+      }
+    }
   }
 }

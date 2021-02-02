@@ -63,3 +63,6 @@ buck-out/
 /ios/Pods/
 .vscode
 coverage
+
+# ENV
+.env
