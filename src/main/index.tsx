@@ -6,12 +6,13 @@ import {EvaIconsPack} from '@ui-kitten/eva-icons';
 import React from 'react';
 import FlashMessage from 'react-native-flash-message';
 import 'react-native-gesture-handler';
+import {makeLogin} from './factories/pages';
 
 export default () => (
   <NavigationContainer>
     <IconRegistry icons={EvaIconsPack} />
     <ApplicationProvider {...eva} theme={eva.light}>
-      <Router />
+      <Router makeLogin={makeLogin} />
       <FlashMessage position="top" />
     </ApplicationProvider>
   </NavigationContainer>
