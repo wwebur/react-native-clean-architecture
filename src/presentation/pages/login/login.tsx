@@ -73,7 +73,13 @@ const Login: React.FC<LoginProps> = ({
       navigation.navigate('Home');
     } catch (error) {
       setLoading(false);
-      await display.show({title: 'Oops!', description: error.message});
+      await display.show(
+        {title: 'Oops!', description: error.message},
+        {
+          appearance: 'floating',
+          type: 'danger',
+        },
+      );
     }
   };
 
