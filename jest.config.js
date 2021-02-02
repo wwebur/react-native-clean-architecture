@@ -2,7 +2,12 @@ module.exports = {
   preset: 'react-native',
   setupFilesAfterEnv: ['./jest.setup.js'],
   roots: ['<rootDir>/src'],
-  collectCoverageFrom: ['<rootDir>/src/**/*.{ts,tsx}'],
+  collectCoverageFrom: [
+    '<rootDir>/src/**/*.{ts,tsx}',
+    '!<rootDir>/src/main/**/*',
+    '!<rootDir>/src/config/**/*',
+    '!**/*.d.ts',
+  ],
   coverageDirectory: 'coverage',
   testEnvironment: 'node',
   transform: {
