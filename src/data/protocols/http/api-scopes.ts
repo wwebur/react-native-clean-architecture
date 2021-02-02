@@ -1,1 +1,1 @@
-export type ApiScope = 'login';
+export type ApiScope = '/login';
