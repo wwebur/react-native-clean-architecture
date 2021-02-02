@@ -206,8 +206,10 @@ describe('Login Page', () => {
       fillInputs(sut);
     });
     const spinner = sut.getByTestId('buttons_container').findAllByType(Spinner);
-    expect(displaySpy.title).toBe('Oops!');
-    expect(displaySpy.description).toBe(error.message);
+    expect(displaySpy.message.title).toBe('Oops!');
+    expect(displaySpy.message.description).toBe(error.message);
+    expect(displaySpy.options.appearance).toBe('floating');
+    expect(displaySpy.options.type).toBe('danger');
     expect(spinner.length).toBe(0);
   });
 
@@ -237,8 +239,10 @@ describe('Login Page', () => {
     await waitFor(() => {
       fillInputs(sut);
     });
-    expect(displaySpy.title).toBe('Oops!');
-    expect(displaySpy.description).toBe(error.message);
+    expect(displaySpy.message.title).toBe('Oops!');
+    expect(displaySpy.message.description).toBe(error.message);
+    expect(displaySpy.options.appearance).toBe('floating');
+    expect(displaySpy.options.type).toBe('danger');
   });
 
   test('Should go to SignUp page', async () => {
