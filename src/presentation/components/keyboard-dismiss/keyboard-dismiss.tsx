@@ -1,3 +1,4 @@
+import {GlobalStyles} from '@/presentation/styles';
 import React from 'react';
 import {Keyboard, TouchableWithoutFeedback, View} from 'react-native';
 
@@ -7,7 +8,7 @@ export const KeyboardDismiss: React.FC = ({children}) => {
       testID="keyboard_dismiss"
       onPress={() => Keyboard.dismiss()}
       accessible={false}>
-      <View>{children}</View>
+      <View style={GlobalStyles.container}>{children}</View>
     </TouchableWithoutFeedback>
   );
 };
