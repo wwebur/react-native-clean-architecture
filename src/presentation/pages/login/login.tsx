@@ -1,6 +1,6 @@
 import {Authentication, HandleAccessToken} from '@/domain/usecases';
+import {DisplayMessage} from '@/domain/usecases/display-message';
 import {DefaultI18n, LoginI18n, translate} from '@/locale';
-import {Display} from '@/presentation/protocols';
 import {RootStackParamList} from '@/presentation/routes';
 import {GlobalStyles} from '@/presentation/styles';
 import {LoginFormValues} from '@/presentation/types';
@@ -32,7 +32,7 @@ type LoginScreenNavigationProp = StackNavigationProp<
 type LoginProps = {
   validation: Validation;
   authentication: Authentication;
-  display: Display;
+  display: DisplayMessage;
   handleAccessToken: HandleAccessToken;
   navigation: LoginScreenNavigationProp;
 };
@@ -69,7 +69,7 @@ const Login: React.FC<LoginProps> = ({
       navigation.navigate('Home');
     } catch (error) {
       setLoading(false);
-      display.show({title: 'Oops!', description: error.message});
+      await display.show({title: 'Oops!', description: error.message});
     }
   };
 
