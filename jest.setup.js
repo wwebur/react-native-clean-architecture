@@ -22,6 +22,10 @@ jest.mock('react-native', () => {
   return RN;
 });
 
+jest.mock('react-native-flash-message', () => ({
+  showMessage(options) {},
+}));
+
 mockAsyncStorage.setItem = jest.fn((_key, _value) => {});
 
 mockAsyncStorage.getItem = jest.fn((_key) => {});
