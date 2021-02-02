@@ -12,6 +12,7 @@ const normalizeTranslate = {
   pt_BR: 'pt',
   en: 'en',
   pt_US: 'pt',
+  zh_CN: 'cn',
 };
 
 // Function responsible for acquiring the language used on the device

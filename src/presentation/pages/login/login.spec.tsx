@@ -18,7 +18,7 @@ import {
   RenderAPI,
   waitFor,
 } from '@testing-library/react-native';
-import {Spinner} from '@ui-kitten/components';
+import {Icon, Spinner} from '@ui-kitten/components';
 import faker from 'faker';
 import React from 'react';
 import {Login} from '..';
@@ -111,6 +111,22 @@ describe('Login Page', () => {
       true,
     );
     expect(sut.getByTestId('login_button')).not.toBeDisabled();
+  });
+
+  test('Should change password visibility on visibility icon tap', async () => {
+    const {sut} = makeSut();
+    await waitFor(() => {
+      fireEvent.press(
+        sut.getByTestId('password_input_container').findAllByType(Icon)[1],
+      );
+    });
+    expect(sut.getByTestId('password_input')).toHaveProp(
+      'secureTextEntry',
+      false,
+    );
+    expect(
+      sut.getByTestId('password_input_container').findAllByType(Icon)[1],
+    ).toHaveProp('name', 'eye');
   });
 
   test('Should call Validation with correct values', () => {

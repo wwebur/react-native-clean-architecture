@@ -83,9 +83,7 @@ export class NavigationStub<P extends Routes>
     this.state = state;
   }
 
-  goBack(): void {
-    throw new Error('Method not implemented.');
-  }
+  goBack(): void {}
 
   isFocused(): boolean {
     throw new Error('Method not implemented.');

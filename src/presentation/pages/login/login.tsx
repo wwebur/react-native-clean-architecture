@@ -178,6 +178,7 @@ const Login: React.FC<LoginProps> = ({
                           testID="visibility_touchable"
                           onPress={toggleSecureEntry}>
                           <Icon
+                            testID="visibility_icon"
                             {...props}
                             name={secureTextEntry ? 'eye-off' : 'eye'}
                           />

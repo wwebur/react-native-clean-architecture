@@ -9,11 +9,11 @@ describe('FlashMessageAdapter', () => {
     const sut = new FlashMessageAdapter();
     const fakeMessage = makeFakeMessage();
     const librarySpy = jest.spyOn(FlashMessage, 'showMessage');
-    await sut.show(fakeMessage, {appearance: 'floating', type: 'default'});
+    await sut.show(fakeMessage, {appearance: 'default', type: 'default'});
     expect(librarySpy).toHaveBeenCalledWith({
       message: fakeMessage.title,
       description: fakeMessage.description,
-      floating: true,
+      floating: false,
       type: 'default',
     });
   });

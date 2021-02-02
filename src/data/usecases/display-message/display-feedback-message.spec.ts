@@ -30,7 +30,7 @@ describe('DisplayFeedbackMessage', () => {
     expect(messagePresenterSpy.options.type).toBe('default');
   });
 
-  test('Should throw error if MessagePresenter throws error', () => {
+  test('Should throw error if MessagePresenter throws error', async () => {
     const {sut, messagePresenterSpy} = makeSut();
     const errorMessage = faker.random.words();
     const fakeMessage = makeFakeMessage();
@@ -42,6 +42,6 @@ describe('DisplayFeedbackMessage', () => {
       title: fakeMessage.title,
       description: fakeMessage.description,
     });
-    expect(promise).rejects.toThrow(new Error(errorMessage));
+    await expect(promise).rejects.toThrow(new Error(errorMessage));
   });
 });

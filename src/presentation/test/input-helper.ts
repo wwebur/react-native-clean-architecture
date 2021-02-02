@@ -3,13 +3,6 @@ import {InputProps} from '@ui-kitten/components';
 import faker from 'faker';
 import {ReactTestInstance} from 'react-test-renderer';
 
-export class InvalidContainerError extends Error {
-  constructor() {
-    super('Container should have at least one TextInput child');
-    this.name = 'InvalidContainerError';
-  }
-}
-
 export const getInputCaptionByContainer = (
   inputContainer: ReactTestInstance,
 ): string | null => {
@@ -21,7 +14,6 @@ export const getInputCaptionByContainer = (
     }
     return null;
   }
-  throw new InvalidContainerError();
 };
 
 export const fillInputs = (

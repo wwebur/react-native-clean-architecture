@@ -1,4 +1,5 @@
 import {
+  setLanguageToI18n,
   translate,
   translateAndReplaceWithArray,
   translateAndReplaceWithString,
@@ -6,7 +7,29 @@ import {
 import {TestsI18n} from './scope';
 
 describe('Locale', () => {
+  let Platform;
+
   test('Should translate to correct text based on device language', () => {
+    const translatedText = translate(TestsI18n.helloWorld);
+    expect(translatedText).toBe('Hello World $ $');
+  });
+
+  test('Should translate to correct text based on device language on Android platform', () => {
+    Platform = require('react-native').Platform;
+    Platform.OS = 'android';
+    setLanguageToI18n();
+    const translatedText = translate(TestsI18n.helloWorld);
+    expect(translatedText).toBe('Hello World $ $');
+  });
+
+  test('Should translate to en if user does not have a supported language', () => {
+    const RN = jest.requireMock('react-native');
+    RN.NativeModules.SettingsManager = {
+      settings: {AppleLocale: 'zh_CN'},
+    };
+    RN.NativeModules.I18nManager = {localeIdentifier: 'zh_CN'};
+    setLanguageToI18n();
+
     const translatedText = translate(TestsI18n.helloWorld);
     expect(translatedText).toBe('Hello World $ $');
   });
