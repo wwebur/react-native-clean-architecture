@@ -1,3 +1,10 @@
+## [0.1.2](https://github.com/vitorverasm/react-native-clean-architecture/compare/0.1.1...0.1.2) (2021-02-04)
+
+
+### ci
+
+* add Coveralls to action to github actions file ([11f838f](https://github.com/vitorverasm/react-native-clean-architecture/commit/11f838f355fa29254370e9019a8a12ed61a853a5))
+
 ## [0.1.1](https://github.com/vitorverasm/react-native-clean-architecture/compare/0.1.0...0.1.1) (2021-02-04)
 
 
