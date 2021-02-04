@@ -1,4 +1,4 @@
-![Run lint and tests](https://github.com/vitorverasm/react-native-clean-architecture/workflows/Run%20lint%20and%20tests/badge.svg)
+![Run lint and tests](https://github.com/vitorverasm/react-native-clean-architecture/workflows/Run%20lint%20and%20tests/badge.svg?branch=main)
 [![Coverage Status](https://coveralls.io/repos/github/vitorverasm/react-native-clean-architecture/badge.svg?branch=main)](https://coveralls.io/github/vitorverasm/react-native-clean-architecture?branch=main)
 [![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)
 
