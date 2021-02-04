@@ -1,3 +1,23 @@
+## [0.1.1](https://github.com/vitorverasm/react-native-clean-architecture/compare/0.1.0...0.1.1) (2021-02-04)
+
+
+### chore
+
+* add check script ([9dee226](https://github.com/vitorverasm/react-native-clean-architecture/commit/9dee2260a8dc8cbaebe8af69d30a8a616b697299))
+* add coveralls ([32c297e](https://github.com/vitorverasm/react-native-clean-architecture/commit/32c297e5acbaca3a8f47d6b15b9acf274e99a18c))
+* add github actions setup ([40c2e24](https://github.com/vitorverasm/react-native-clean-architecture/commit/40c2e24b83f5f263828b9b763633faf3dd23543e))
+* change release-it changelog template to eslint ([d95a8c2](https://github.com/vitorverasm/react-native-clean-architecture/commit/d95a8c2aef792828bcdc1abb102b2a5f56e6b0fc))
+* configure github actions to run only in node 12.x ([aa04239](https://github.com/vitorverasm/react-native-clean-architecture/commit/aa0423986f5f1c90382e831f8837d3057f16e71e))
+* remove changelog plugin from release-it ([5ba3f7f](https://github.com/vitorverasm/react-native-clean-architecture/commit/5ba3f7fdd14b5bb69fa36011ceace9749c217d47))
+
+### ci
+
+* update gihub ci to use coveralls report ([bd68a71](https://github.com/vitorverasm/react-native-clean-architecture/commit/bd68a718d9de625efe1587eec76bffae08ebbb39))
+
+### docs
+
+* initialize readme file ([3d4a33a](https://github.com/vitorverasm/react-native-clean-architecture/commit/3d4a33a0027e2ddbf45a49bb822a67f7e95d973d))
+
 # 0.1.0 (2021-02-02)
 
 
